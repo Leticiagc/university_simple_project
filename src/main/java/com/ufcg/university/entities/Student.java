@@ -25,6 +25,10 @@ public class Student {
 		this.name = name;
 		this.registration = registration;
 	}
+	
+	public Long getId() {
+		return id;
+	}
 
 	public String getName() {
 		return name;
@@ -33,4 +37,14 @@ public class Student {
 	public String getRegistration() {
 		return registration;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setRegistration(String registration) {
+		this.registration = registration;
+	}
+	
+	
 }
