@@ -12,12 +12,14 @@ public class ProfessorMapper {
 	private ModelMapper modelMapper;
 	
 	public ProfessorDTO convertToProfessorDTO(Professor professor) {
-		ProfessorDTO professorDTO = modelMapper.map(professor, ProfessorDTO.class);
+		this.modelMapper = new ModelMapper();
+		ProfessorDTO professorDTO = this.modelMapper.map(professor, ProfessorDTO.class);
 		return professorDTO;
 	}
 	
 	public Professor convertFromProfessorDTO(ProfessorDTO professorDTO) {
-		Professor professor = modelMapper.map(professorDTO, Professor.class);
+		this.modelMapper = new ModelMapper();
+		Professor professor = this.modelMapper.map(professorDTO, Professor.class);
 		return professor;
 	}
 

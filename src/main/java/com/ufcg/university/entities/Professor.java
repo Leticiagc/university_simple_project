@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "professor")
 public class Professor {
 	
 	@Id
@@ -30,14 +32,31 @@ public class Professor {
 		this.discipline = discipline;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public String getName() {
 		return name;
 	}
+	
 	public Integer getServiceTime() {
 		return serviceTime;
 	}
 
 	public String getDiscipline() {
 		return discipline;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setServiceTime(Integer serviceTime) {
+		this.serviceTime = serviceTime;
+	}
+
+	public void setDiscipline(String discipline) {
+		this.discipline = discipline;
 	}
 }
