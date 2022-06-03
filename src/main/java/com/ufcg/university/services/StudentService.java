@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ufcg.university.dto.StudentDTO;
@@ -17,6 +18,9 @@ public class StudentService {
 	
 	@Autowired
 	private StudentRepository studentRepository;
+	
+	@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private StudentMapper studentMapper;
@@ -39,7 +43,10 @@ public class StudentService {
 	
 	public Student createStudent(StudentDTO studentDTO) {
 		Student student = this.studentMapper.convertFromStudentDTO(studentDTO);
-		return this.studentRepository.save(student);
+		student.setPassword(bCryptPasswordEncoder.encode(student.getPassword()));
+		this.studentRepository.save(student);
+		student.setPassword(studentDTO.getPassword());
+		return student;
 	}
 	
 	public StudentDTO updateStudent(Long id, StudentDTO studentDTO) throws Exception {
@@ -50,6 +57,7 @@ public class StudentService {
 			Student studentUpdated = student.get();
 			studentUpdated.setName(studentDTO.getName());
 			studentUpdated.setRegistration(studentDTO.getRegistration());
+			studentUpdated.setPassword(bCryptPasswordEncoder.encode(studentDTO.getPassword()));
 			this.studentRepository.save(studentUpdated);
 			return studentDTO;
 		}

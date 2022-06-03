@@ -18,6 +18,9 @@ public class Professor {
 	@Column(name = "name")
 	private String name;
 	
+	@Column(name = "password")
+	private String password;
+	
 	@Column(name = "serviceTime")
 	private Integer serviceTime;
 	
@@ -26,8 +29,9 @@ public class Professor {
 	
 	public Professor() {}
 	
-	public Professor(String name, Integer serviceTime, String discipline) {
+	public Professor(String name, String password, Integer serviceTime, String discipline) {
 		this.name = name;
+		this.password = password;
 		this.serviceTime = serviceTime;
 		this.discipline = discipline;
 	}
@@ -58,5 +62,13 @@ public class Professor {
 
 	public void setDiscipline(String discipline) {
 		this.discipline = discipline;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

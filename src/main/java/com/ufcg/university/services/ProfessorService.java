@@ -52,6 +52,7 @@ public class ProfessorService {
 			professorUpdated.setName(professorDTO.getName());
 			professorUpdated.setDiscipline(professorDTO.getDiscipline());
 			professorUpdated.setServiceTime(professorDTO.getServiceTime());
+			professorUpdated.setPassword(professorDTO.getPassword());
 			this.professorRepository.save(professorUpdated);
 			return professorDTO;
 		}

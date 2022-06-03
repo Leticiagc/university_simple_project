@@ -16,12 +16,16 @@ public class Student {
 	@Column(name = "name")
 	private String name;
 	
+	@Column(name = "password")
+	private String password;
+	
 	@Column(name = "registration")
 	private String registration;
 	
 	public Student() {}
 	
-	public Student(String name, String registration) {
+	public Student(String name, String password, String registration) {
+		this.password = password;
 		this.name = name;
 		this.registration = registration;
 	}
@@ -45,6 +49,12 @@ public class Student {
 	public void setRegistration(String registration) {
 		this.registration = registration;
 	}
-	
-	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
