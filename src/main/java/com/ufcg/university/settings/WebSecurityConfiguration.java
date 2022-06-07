@@ -19,15 +19,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     private static final String[] AUTH_WHITELIST = {
-        "/v2/api-docs",
-        "/signup/**",
-        "/h2-console/**",
-        "/swagger-resources",
-        "/swagger-resources/**",
-        "/configuration/ui",
-        "/configuration/security",
-        "/swagger-ui.html",
-        "/webjars/**"
+    		"/swagger-ui/**",
+    		"/v3/api-docs/**",
+	        "/v2/api-docs",
+	        "/signup/**",
+	        "/h2-console/**",
+	        "/swagger-resources",
+	        "/swagger-resources/**",
+	        "/configuration/ui",
+	        "/configuration/security",
+	        "/swagger-ui.html",
+	        "/webjars/**"
     };
 
     public WebSecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {

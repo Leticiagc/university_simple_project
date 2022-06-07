@@ -36,8 +36,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         	com.ufcg.university.entities.User credentials = new ObjectMapper().readValue(request.getInputStream(), 
                 						com.ufcg.university.entities.User.class);
         	
-        	//System.out.println(credentials.getName() + " - " + credentials.getPassword());
-        	
             return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(credentials.getName(), credentials.getPassword(), new ArrayList<>()));
         } catch (IOException e) {
