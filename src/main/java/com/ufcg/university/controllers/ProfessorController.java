@@ -30,7 +30,7 @@ import io.swagger.annotations.ResponseHeader;
 
 @RestController
 @RequestMapping(value = "/professor")
-@Api(value = "Professor")
+@Api(value = "Professor", protocols = "HTTP/HTTPS")
 public class ProfessorController {
 	
 	@Autowired
@@ -40,9 +40,9 @@ public class ProfessorController {
 	@ApiOperation(value = "List All Professors",
 				  notes = "Multiple Professors can be provided in a list",
 				  response = ProfessorDTO.class,
-				  responseContainer = "List"
+				  responseContainer = "List",
+				  httpMethod = "GET"
 	)
-	
 	@ApiModelProperty(allowableValues = "list of professors")
 	public ResponseEntity<List<ProfessorDTO>> getAllProfessors() {
 		return new ResponseEntity<>(this.professorService.listProfessors(), HttpStatus.OK);
@@ -52,19 +52,19 @@ public class ProfessorController {
 	@ApiOperation(value = "Create a Professor", 
 		authorizations = {
 			    @Authorization(
-				        value = "universityoauth", // scheme 
+				        value = "university-oauth", // scheme 
 					    scopes = {
 					        @AuthorizationScope(
 					        		scope = "add:professor", 
-					        		description = "Allows adding of professors")
-						     }
+					        		description = "Allows adding of professors"
+					        )
+				        }
 				)
 		},
 		responseHeaders = {
-				@ResponseHeader(description = "It's return a Status Code")
+				@ResponseHeader(description = "It's a header")
 		}
 	)
-	
 	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
 		return new ResponseEntity<>(this.professorService.createProfessor(professorDTO), HttpStatus.CREATED);
 	}
@@ -73,6 +73,11 @@ public class ProfessorController {
 	@ApiOperation(value = "Get Professor By Id")
 	@ApiResponses(
 			value = {
+					@ApiResponse(code = 200, message = "It's OK", response = ProfessorDTO.class,
+							responseHeaders = {
+									@ResponseHeader(description = "It's a header")
+							}
+					),
 					@ApiResponse(code = 400, message = "Invalid ID"),
 					@ApiResponse(code = 404, message = "Professor Not Found") 
 			}
@@ -98,10 +103,10 @@ public class ProfessorController {
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update Professor")
 	@ApiImplicitParams({
-	    @ApiImplicitParam(name = "name", value = "Professor's name", required = true, dataType = "string", paramType = "body"),
-	    @ApiImplicitParam(name = "password", value = "Professor's password", required = true, dataType = "string", paramType = "body"),
-	    @ApiImplicitParam(name = "serviceTime", value = "Professor's service time", required = true, dataType = "int", paramType = "body"),
-	    @ApiImplicitParam(name = "discipline", value = "Professor's discipline", required = true, dataType = "string", paramType = "body")
+	    @ApiImplicitParam(name = "name", value = "Professor's name", required = true, dataType = "string"),
+	    @ApiImplicitParam(name = "password", value = "Professor's password", required = true, dataType = "string"),
+	    @ApiImplicitParam(name = "serviceTime", value = "Professor's service time", required = true, dataType = "integer"),
+	    @ApiImplicitParam(name = "discipline", value = "Professor's discipline", required = true, dataType = "string")
 	})
 	public ResponseEntity<?> updateProfessorById(@RequestParam("id") Long id, 
 												 @ApiParam(value = "Updated professor object", required = true) ProfessorDTO professorDTO) {
