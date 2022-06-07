@@ -1,0 +1,8 @@
+===================== REQUESTS EXAMPLES =====================
+==== SIGNUP ====
+curl -v -X POST localhost:8080/signup/student/ -H 'Content-Type: application/json' -d '{"name": "Gabriel", "password": "12345678", "registration":"118210822"}'
+
+===== LOG IN =====
+curl -v -X POST localhost:8080/login -H 'Content-Type: application/json' -d '{"name": "Gabriel", "password": "12345678"}'
+==== RESPONSE ====
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzd... => HEADER TOKEN
