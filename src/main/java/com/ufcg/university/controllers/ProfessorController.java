@@ -48,27 +48,6 @@ public class ProfessorController {
 		return new ResponseEntity<>(this.professorService.listProfessors(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	@ApiOperation(value = "Create a Professor", 
-		authorizations = {
-			    @Authorization(
-				        value = "university-oauth", // scheme 
-					    scopes = {
-					        @AuthorizationScope(
-					        		scope = "add:professor", 
-					        		description = "Allows adding of professors"
-					        )
-				        }
-				)
-		},
-		responseHeaders = {
-				@ResponseHeader(description = "It's a header")
-		}
-	)
-	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
-		return new ResponseEntity<>(this.professorService.createProfessor(professorDTO), HttpStatus.CREATED);
-	}
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get Professor By Id")
 	@ApiResponses(

@@ -33,12 +33,6 @@ public class StudentController {
 		return new ResponseEntity<>(this.studentService.listStudents(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	@ApiOperation(value = "Create a Student")
-	public ResponseEntity<Student> createStudent(@RequestBody StudentDTO studentDTO) {
-		return new ResponseEntity<>(this.studentService.createStudent(studentDTO), HttpStatus.CREATED);
-	}
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get Student By Id")
 	public ResponseEntity<?> getStudentById(@PathVariable("id") Long id) {
