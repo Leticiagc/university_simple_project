@@ -16,6 +16,11 @@ import com.ufcg.university.services.ProfessorService;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
+import io.swagger.v3.oas.annotations.extensions.Extensions;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
@@ -28,7 +33,19 @@ public class ProfessorController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	@Operation(summary = "List All Professors",
 			responses = {
-				    @ApiResponse(responseCode = "200", description = "It's Ok"),
+				    @ApiResponse(
+				    		responseCode = "200", 
+				    		description = "Request OK",
+				    		headers = {
+				    				@Header(
+				    						name = "Header",
+				    						description = "Return Request Informations",
+				    						schema = @Schema(
+				    								// MANY THINGS TO SET UP
+				    						)
+				    				)
+				    		}
+				    ),
 				    @ApiResponse(responseCode = "400", description = "Bad Request"),
 				    @ApiResponse(responseCode = "403", description = "Forbidden")
 			},
@@ -42,8 +59,21 @@ public class ProfessorController {
 	@Operation(summary = "Get Professor By Id",
 		responses = {
 			    @ApiResponse(responseCode = "200", description = "It's Ok"),
-			    @ApiResponse(responseCode = "204", description = "No content")
+			    @ApiResponse(responseCode = "204", description = "Professor Not Found")
 		}
+	)
+	@Extensions(
+			value = {
+					@Extension(
+						name = "documentation",
+						properties = {
+								@ExtensionProperty(
+										name = "link", 
+										value = "mylink.com"
+								)
+						}
+					)
+			}
 	)
 	public ResponseEntity<?> getProfessorById(@PathVariable("id") Long id) {
 		try {
@@ -54,7 +84,12 @@ public class ProfessorController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.DELETE)
-	@Operation(summary = "Delete Professor By Id")
+	@Operation(summary = "Delete Professor By Id",
+			responses = {
+				    @ApiResponse(responseCode = "200", description = "It's Ok"),
+				    @ApiResponse(responseCode = "204", description = "Professor Not Found")
+			}
+	)
 	public ResponseEntity<?> deleteProfessorById(@RequestParam("id") Long id) {
 		try {
 			return new ResponseEntity<>(this.professorService.deleteProfessor(id), HttpStatus.OK);
@@ -64,7 +99,12 @@ public class ProfessorController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
-	@Operation(summary = "Update Professor")
+	@Operation(summary = "Update Professor",
+			responses = {
+				    @ApiResponse(responseCode = "200", description = "It's Ok"),
+				    @ApiResponse(responseCode = "204", description = "Professor Not Found")
+			}
+	)
 	public ResponseEntity<?> updateProfessorById(@RequestParam("id") Long id, ProfessorDTO professorDTO) {
 		try {
 			return new ResponseEntity<>(this.professorService.updateProfessor(id, professorDTO), HttpStatus.OK);
