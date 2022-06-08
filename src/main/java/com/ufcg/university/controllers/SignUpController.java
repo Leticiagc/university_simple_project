@@ -15,12 +15,10 @@ import com.ufcg.university.entities.Student;
 import com.ufcg.university.services.ProfessorService;
 import com.ufcg.university.services.StudentService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping(value = "/signup")
-@Api(value = "Sign Up")
 public class SignUpController {
 	
 	@Autowired
@@ -30,13 +28,13 @@ public class SignUpController {
 	private StudentService studentService;
 	
 	@RequestMapping(value = "/professor", method = RequestMethod.POST)
-	@ApiOperation(value = "Create a Professor")
+	@ApiResponse(description = "Create a Professor")
 	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
 		return new ResponseEntity<>(this.professorService.createProfessor(professorDTO), HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/student", method = RequestMethod.POST)
-	@ApiOperation(value = "Create a Student")
+	@ApiResponse(description = "Create a Student")
 	public ResponseEntity<Student> createStudent(@RequestBody StudentDTO studentDTO) {
 		return new ResponseEntity<>(this.studentService.createStudent(studentDTO), HttpStatus.CREATED);
 	}

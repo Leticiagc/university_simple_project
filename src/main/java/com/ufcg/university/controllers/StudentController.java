@@ -15,25 +15,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufcg.university.dto.StudentDTO;
 import com.ufcg.university.services.StudentService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
+
 
 @RestController
 @RequestMapping(value = "/student")
-@Api(value = "Student")
 public class StudentController {
 	
 	@Autowired
 	private StudentService studentService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	@ApiOperation(value = "List All Students")
+	@ApiResponse(description = "List All Students")
 	public ResponseEntity<List<StudentDTO>> getAllStudents() {
 		return new ResponseEntity<>(this.studentService.listStudents(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	@ApiOperation(value = "Get Student By Id")
+	@ApiResponse(description = "Get Student By Id")
 	public ResponseEntity<?> getStudentById(@PathVariable("id") Long id) {
 		try {
 			return new ResponseEntity<>(this.studentService.getStudentById(id), HttpStatus.OK);
@@ -43,7 +43,7 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete Student By Id")
+	@ApiResponse(description = "Delete Student By Id")
 	public ResponseEntity<?> deleteStudentById(@RequestParam("id") Long id) {
 		try {
 			return new ResponseEntity<>(this.studentService.deleteStudent(id), HttpStatus.OK);
@@ -53,7 +53,7 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
-	@ApiOperation(value = "Update Student")
+	@ApiResponse(description = "Update Student")
 	public ResponseEntity<?> updateStudentById(@RequestParam("id") Long id, @RequestBody StudentDTO studentDTO) {
 		try {
 			return new ResponseEntity<>(this.studentService.updateStudent(id, studentDTO), HttpStatus.OK);
