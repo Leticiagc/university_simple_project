@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufcg.university.dto.StudentDTO;
-import com.ufcg.university.entities.Student;
 import com.ufcg.university.services.StudentService;
 
 import io.swagger.annotations.Api;

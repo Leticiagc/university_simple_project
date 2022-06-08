@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Extension;
 import io.swagger.annotations.ExtensionProperty;
-import io.swagger.annotations.ExternalDocs;
 import io.swagger.annotations.ResponseHeader;
 
 @RestController
