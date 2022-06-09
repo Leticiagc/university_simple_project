@@ -42,13 +42,15 @@ public class Professor {
 	@Schema(title = "Tempo de Serviço",
 			example = "10",
 			minimum = "0",
+			maximum = "65",
 			exclusiveMinimum = true)
 	private Integer serviceTime;
 	
 	@Column(name = "discipline")
 	@Schema(title = "Disciplina",
 			example = "Cálculo 1",
-			nullable = true)
+			nullable = true,
+			allowableValues = "Cálculo 1, P1, EDA, Lógica")
 	private String discipline;
 	
 	public Professor() {}
