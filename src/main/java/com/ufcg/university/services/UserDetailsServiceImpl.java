@@ -29,7 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         	return new org.springframework.security.core.userdetails.User(student.getName(), student.getPassword(), Collections.emptyList());
         }
         Professor professor = professorRepository.findByName(username);
-        System.out.println(professor.getName());
         if (professor != null) {
         	return new org.springframework.security.core.userdetails.User(professor.getName(), professor.getPassword(), Collections.emptyList());
         }
