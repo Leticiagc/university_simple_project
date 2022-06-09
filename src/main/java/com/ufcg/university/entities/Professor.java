@@ -1,5 +1,8 @@
 package com.ufcg.university.entities;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,22 +12,43 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "professor")
+@ApiModel(value = "Objeto Professor", description = "Modelo de Objetos do tipo Professor.")
 public class Professor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ApiModelProperty(value = "ID Único",
+			example = "5",
+			position = 0,
+			allowableValues = "range[1,infinite)")
 	private Long id;
 	
 	@Column(name = "name")
+	@ApiModelProperty(value = "Nome",
+			example = "Francisco",
+			required = true,
+			position = 1)
 	private String name;
 	
 	@Column(name = "password")
+	@ApiModelProperty(value = "Senha",
+			example = "1234ABcd",
+			required = true,
+			position = 2)
 	private String password;
 	
 	@Column(name = "serviceTime")
+	@ApiModelProperty(value = "Tempo de Serviço",
+			example = "5",
+			allowableValues = "range[1, 50]",
+			position = 3)
 	private Integer serviceTime;
 	
 	@Column(name = "discipline")
+	@ApiModelProperty(value = "Disciplina",
+			example = "Cálculo 1",
+			allowableValues = "Cálculo 1, P1, EDA, Lógica",
+			position = 4)
 	private String discipline;
 	
 	public Professor() {}
