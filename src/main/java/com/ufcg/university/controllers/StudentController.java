@@ -18,8 +18,6 @@ import com.ufcg.university.services.StudentService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-
-
 @RestController
 @RequestMapping(value = "/student")
 @SecurityRequirement(name = "Authorization")
