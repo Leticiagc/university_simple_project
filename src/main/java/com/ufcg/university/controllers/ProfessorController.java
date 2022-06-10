@@ -45,14 +45,15 @@ public class ProfessorController {
 				    						description = "Return Request Informations",
 				    						schema = @Schema(
 				    								// MANY THINGS TO SET UP
-				    						)
+				    						),
+				    						required = true
 				    				)
 				    		}
 				    ),
 				    @ApiResponse(responseCode = "400", description = "Bad Request"),
 				    @ApiResponse(responseCode = "403", description = "Forbidden")
 			},
-			externalDocs = @ExternalDocumentation(description = "Documentation", url = "mylink.com")
+			externalDocs = @ExternalDocumentation(description = "Documentation", url = "www.ufcg.com")
 	)
 	public ResponseEntity<List<ProfessorDTO>> getAllProfessors() {
 		return new ResponseEntity<>(this.professorService.listProfessors(), HttpStatus.OK);
