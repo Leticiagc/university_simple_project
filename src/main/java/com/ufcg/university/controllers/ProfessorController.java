@@ -62,6 +62,7 @@ public class ProfessorController {
 //	@ProfessorGetByIDOperation
 	@ProfessorOperation
 	public ResponseEntity<?> getProfessorById(@PathVariable("id") Long id) {
+		
 		try {
 			return new ResponseEntity<>(this.professorService.getProfessorById(id), HttpStatus.OK);
 		} catch (Exception e) {
