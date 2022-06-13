@@ -1,6 +1,8 @@
 package com.ufcg.university.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,9 @@ import com.ufcg.university.services.StudentService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "/signup")
 public class SignUpController {
@@ -30,7 +35,10 @@ public class SignUpController {
 	@RequestMapping(value = "/professor", method = RequestMethod.POST)
 	@ApiResponse(description = "Create a Professor")
 	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
-		return new ResponseEntity<>(this.professorService.createProfessor(professorDTO), HttpStatus.CREATED);
+		Professor professor = this.professorService.createProfessor(professorDTO);
+		professor.add(Link.of("http://localhost:8080/professor/"+professor.getId().toString()));
+
+		return new ResponseEntity<>(professor, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/student", method = RequestMethod.POST)
