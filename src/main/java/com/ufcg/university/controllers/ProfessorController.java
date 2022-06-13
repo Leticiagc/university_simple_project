@@ -3,6 +3,7 @@ package com.ufcg.university.controllers;
 import java.util.List;
 
 import com.ufcg.university.annotations.ProfessorGetByIDOperation;
+import com.ufcg.university.annotations.ProfessorOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +59,8 @@ public class ProfessorController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	@ProfessorGetByIDOperation
+//	@ProfessorGetByIDOperation
+	@ProfessorOperation
 	public ResponseEntity<?> getProfessorById(@PathVariable("id") Long id) {
 		try {
 			return new ResponseEntity<>(this.professorService.getProfessorById(id), HttpStatus.OK);
