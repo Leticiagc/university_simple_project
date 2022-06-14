@@ -52,6 +52,21 @@ public class ProfessorController {
 				    @ApiResponse(responseCode = "400", description = "Bad Request"),
 				    @ApiResponse(responseCode = "403", description = "Forbidden")
 			},
+			extensions = {
+					@Extension(
+						name = "documentation",
+						properties = {
+								@ExtensionProperty(
+										name = "link", 
+										value = "linktodocumentation.com"
+								),
+								@ExtensionProperty(
+										name = "anything", 
+										value = "anything value"
+								)
+						}
+				)
+			},
 			externalDocs = @ExternalDocumentation(description = "Documentation", url = "www.ufcg.com")
 	)
 	public ResponseEntity<List<ProfessorDTO>> getAllProfessors() {
@@ -64,19 +79,6 @@ public class ProfessorController {
 			    @ApiResponse(responseCode = "200", description = "It's Ok"),
 			    @ApiResponse(responseCode = "204", description = "Professor Not Found")
 		}
-	)
-	@Extensions(
-			value = {
-					@Extension(
-						name = "documentation",
-						properties = {
-								@ExtensionProperty(
-										name = "link", 
-										value = "mylink.com"
-								)
-						}
-					)
-			}
 	)
 	public ResponseEntity<?> getProfessorById(@PathVariable("id") Long id) {
 		try {
