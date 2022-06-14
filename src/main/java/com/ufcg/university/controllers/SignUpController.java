@@ -3,6 +3,7 @@ package com.ufcg.university.controllers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,11 @@ import com.ufcg.university.services.StudentService;
 import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @RestController
 @RequestMapping(value = "/signup")
 public class SignUpController {
@@ -33,7 +39,7 @@ public class SignUpController {
 	private StudentService studentService;
 	
 	@RequestMapping(value = "/professor", method = RequestMethod.POST)
-	@io.swagger.v3.oas.annotations.Operation( responses = {
+	@Operation( responses = {
 		@ApiResponse(
 		description = "Create a Professor",
 		links = {
@@ -57,11 +63,15 @@ public class SignUpController {
 	)})
 	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
 		Professor professor = this.professorService.createProfessor(professorDTO);
-		Link[] links = new Link[] {
+		Link[] links;
+		links = new Link[] {
 			linkTo(methodOn(SignUpController.class).createProfessor(professorDTO)).withSelfRel().withType("POST"),
-			linkTo(methodOn(ProfessorController.class).getProfessorById(professor.getId())).withRel("getProfessor").withType("GET"),
-			linkTo(methodOn(ProfessorController.class).deleteProfessorById(professor.getId())).withRel("deleteProfessor").withType("DELETE"),
+			linkTo(methodOn(ProfessorController.class).getProfessorById(professor.getId())).withRel("getProfessor").withType("GET")
+					.withTitle("Return the professor by its id."),
+			linkTo(methodOn(ProfessorController.class).deleteProfessorById(professor.getId())).withRel("deleteProfessor").withType("DELETE")
+					.withTitle("Delete the professor by its id."),
 			linkTo(methodOn(ProfessorController.class).updateProfessorById(professor.getId(), null)).withRel("putProfessor").withType("PUT")
+					.withTitle("Update the professor by its id.")
 		};
 		professor.add(links);
 
