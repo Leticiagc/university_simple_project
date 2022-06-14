@@ -35,6 +35,8 @@ dependencies {
 	
 	implementation 'org.springdoc:springdoc-openapi-ui:1.4.4'
 	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.4.4'
+	
+	implementation 'org.reflections:reflections:0.9.12'
 }
 
 test {
