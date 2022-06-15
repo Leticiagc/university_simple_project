@@ -41,7 +41,10 @@ public class SignUpController {
 				name = "getProfessor",
 				description = "Return the professor by its id.",
 				operationId = "getProfessorById",
-				parameters = {@LinkParameter(name = "id")}
+				parameters = {
+						@LinkParameter(name = "header", expression = "Authorization"),
+						@LinkParameter(name = "id")
+				}
 			),
 			@io.swagger.v3.oas.annotations.links.Link(
 				name = "deleteProfessor",
