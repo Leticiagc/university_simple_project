@@ -19,33 +19,34 @@ public class SwaggerConfig {
 	
 	@Bean
     public OpenAPI customOpenAPI(){
-        return new OpenAPI()
-                .info(new Info()
-                		.contact(new Contact()
-                				.email("ufcg@email.com")
-                				.name("UFCG")
-                				.url("https://portal.ufcg.edu.br/"))
-                		.title("University API")
-                        .description("University APP")
-                        .version("v0.0.1")
-                        .license(new License()
-                        		.name("Apache 2.0")
-                        		.url("http://springdoc.org")
-                        ))
-                .externalDocs(new ExternalDocumentation()
-                        .description("University App Documentation")
-                        .url("https://documentationlink.com.br"))
-                .components(
-                        new Components()
-                        	.addSecuritySchemes(SECURITY_SCHEME_NAME , 
-                        			new SecurityScheme()
-                        				.name("Authorization")
-                        				.type(SecurityScheme.Type.HTTP)
-                        				.scheme("bearer")
-                        				.bearerFormat("JWT")
-                        				.in(In.HEADER)
-                        				.description("JWT Authorization Header Using The Bearer Scheme")
-                        	)
-                );
+		OpenAPI openApi = new OpenAPI()
+				.info(new Info()
+						.contact(new Contact()
+								.email("ufcg@email.com")
+								.name("UFCG")
+								.url("https://portal.ufcg.edu.br/"))
+						.title("University API")
+						.description("University APP")
+						.version("v0.0.1")
+						.license(new License()
+								.name("Apache 2.0")
+								.url("http://springdoc.org")
+						))
+				.externalDocs(new ExternalDocumentation()
+						.description("University App Documentation")
+						.url("https://documentationlink.com.br"))
+				.components(
+						new Components()
+								.addSecuritySchemes(SECURITY_SCHEME_NAME ,
+										new SecurityScheme()
+												.name("Authorization")
+												.type(SecurityScheme.Type.HTTP)
+												.scheme("bearer")
+												.bearerFormat("JWT")
+												.in(In.HEADER)
+												.description("JWT Authorization Header Using The Bearer Scheme")
+								)
+				);
+        return openApi;
     }
 }

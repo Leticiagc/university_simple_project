@@ -7,11 +7,7 @@ import com.ufcg.university.annotations.ProfessorOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ufcg.university.dto.ProfessorDTO;
 import com.ufcg.university.services.ProfessorService;
@@ -92,7 +88,7 @@ public class ProfessorController {
 				    @ApiResponse(responseCode = "204", description = "Professor Not Found")
 			}
 	)
-	public ResponseEntity<?> updateProfessorById(@RequestParam("id") Long id, ProfessorDTO professorDTO) {
+	public ResponseEntity<?> updateProfessorById(@RequestParam("id") Long id, @RequestBody ProfessorDTO professorDTO) {
 		try {
 			return new ResponseEntity<>(this.professorService.updateProfessor(id, professorDTO), HttpStatus.OK);
 		} catch (Exception e) {

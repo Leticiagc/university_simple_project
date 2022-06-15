@@ -44,7 +44,8 @@ public class Professor extends RepresentationModel<Professor> {
 			example = "10",
 			minimum = "0",
 			maximum = "65",
-			exclusiveMinimum = true)
+			exclusiveMinimum = true,
+			hidden = true)
 	private Integer serviceTime;
 	
 	@Column(name = "discipline")
