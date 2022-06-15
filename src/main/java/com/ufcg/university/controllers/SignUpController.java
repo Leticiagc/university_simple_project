@@ -4,6 +4,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ import com.ufcg.university.entities.Student;
 import com.ufcg.university.services.ProfessorService;
 import com.ufcg.university.services.StudentService;
 
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
@@ -38,23 +41,26 @@ public class SignUpController {
 		description = "Create a Professor",
 		links = {
 			@io.swagger.v3.oas.annotations.links.Link(
-				name = "getProfessor",
+				name = "getProfessorById",
 				description = "Return the professor by its id.",
-				operationId = "getProfessorById",
+				//operationId = "getProfessorById",
 				parameters = {
 						@LinkParameter(name = "header", expression = "Authorization"),
 						@LinkParameter(name = "id")
-				}
+				},
+				operationRef = "/professor/{id}/GET" // Maybe Correct
 			),
 			@io.swagger.v3.oas.annotations.links.Link(
-				name = "deleteProfessor",
+				name = "deleteProfessorById",
 				description = "Delete the professor by its id.",
-				operationId = "deleteProfessorById"
+				//operationId = "deleteProfessorById"
+				operationRef = "/professor/{id}/DELETE" // Maybe Correct
 			),
 			@io.swagger.v3.oas.annotations.links.Link(
-				name = "updateProfessor",
+				name = "updateProfessorById",
 				description = "Update the professor by its id.",
-				operationId = "updateProfessorById"
+				//operationId = "updateProfessorById"
+				operationRef = "/professor/{id}/PUT" // Maybe Correct
 			)
 		}
 	)})
