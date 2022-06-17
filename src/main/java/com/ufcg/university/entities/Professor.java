@@ -19,7 +19,8 @@ public class Professor {
 	@Schema(
 			title = "ID único",
 			description = "Gerado automaticamente.",
-			accessMode = Schema.AccessMode.READ_ONLY)
+			accessMode = Schema.AccessMode.READ_ONLY,
+			example = "1")
 	private Long id;
 	
 	@Column(name = "name")

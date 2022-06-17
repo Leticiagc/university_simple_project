@@ -1,13 +1,44 @@
 package com.ufcg.university.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(name = "Objeto Professor DTO")
 public class ProfessorDTO {
-	
+
+	@Schema(
+			title = "Nome",
+			description = "Nome do professor",
+			example = "Pedro",
+			required = true
+	)
 	private String name;
-	
+
+	@Schema(
+			title = "Senha",
+			description = "Senha",
+			example = "1234Abcd",
+			required = true,
+			minLength = 8,
+			maxLength = 16,
+			format = "[0-9A-Za-z]"
+	)
 	private String password;
-	
+
+	@Schema(
+			title = "Tempo de Serviço",
+			example = "15",
+			minimum = "0",
+			maximum = "70",
+			exclusiveMinimum = true
+	)
 	private Integer serviceTime;
-	
+
+	@Schema(
+			title = "Disciplina",
+			example = "Lógica",
+			nullable = true,
+			allowableValues = "Cálculo 1, P1, LP1, EDA, Lógica"
+	)
 	private String discipline;
 	
 	public ProfessorDTO() {}
