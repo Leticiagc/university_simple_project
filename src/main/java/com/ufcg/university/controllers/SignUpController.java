@@ -38,6 +38,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
@@ -96,8 +97,21 @@ public class SignUpController {
 	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
 		Professor professor = this.professorService.createProfessor(professorDTO);
 		List<Link> links;
-		links = AnnotationToHateoasUtil.getLinksFromMethodClass(SignUpController.class, "createProfessor");
-		professor.add(links);
+		// links = AnnotationToHateoasUtil.getLinksFromMethodClass(SignUpController.class, "createProfessor");
+		// professor.add(links);
+
+		OpenApiResource openApiResource = applicationContext.getBean("openApiResource", OpenApiResource.class);
+		OpenAPI customOpenAPI = (OpenAPI) applicationContext.getBean("customOpenAPI", OpenAPI.class);
+
+		try {
+			Method getOpenAPI = AbstractOpenApiResource.class.getDeclaredMethod("getOpenApi", new Class[] {});
+			if (getOpenAPI.trySetAccessible()) {
+				getOpenAPI.invoke(openApiResource);
+			}
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return new ResponseEntity<>(professor, HttpStatus.CREATED);
 	}
