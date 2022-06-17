@@ -3,6 +3,7 @@ package com.ufcg.university.controllers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import com.ufcg.university.utils.AnnotationToHateoasUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.callbacks.Callback;
 import io.swagger.v3.oas.annotations.extensions.Extension;
@@ -14,6 +15,8 @@ import org.springdoc.webmvc.api.OpenApiResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.BridgeMethodResolver;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +45,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/signup")
@@ -80,47 +84,20 @@ public class SignUpController {
 				parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name"),
 					@LinkParameter(name = "professorDTO", expression = "#/components/schemas/ProfessorDTO")},
 				operationRef = "http://localhost:8080/professor/{id}/put"
+			),
+			@io.swagger.v3.oas.annotations.links.Link(
+				name = "loginProfessor",
+				description = "Professor login by name and password",
+				operationRef = "http://localhost:8080/login/post"
 			)
 		}
 	)})
 
 	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
 		Professor professor = this.professorService.createProfessor(professorDTO);
-		Link[] links;
-
-		String[] beans = applicationContext.getBeanDefinitionNames();
-//		OpenApiResource openAPI = (OpenApiResource) applicationContext.getBean("openApiResource");
-//		openAPI.openapiJson()
-//		System.out.println();
-//		try {
-//			URL url = new URL("http://localhost:8080/v3/api-docs");
-//			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//			InputStream inputStream = con.getInputStream();
-//		} catch (MalformedURLException e) {
-//			throw new RuntimeException(e);
-//		} catch (IOException e) {
-//			throw new RuntimeException(e);
-//		}
-
-		for(String bean:beans){
-			if (bean.equals("customOpenAPI")) {
-				System.out.println("Bean name: " + bean);
-				Object object = applicationContext.getBean(bean);
-				System.out.println( "Bean object:" + object);
-			}
-		}
-//		for ()
-//		links = new Link[] {
-//			linkTo(methodOn(SignUpController.class).createProfessor(professorDTO)).withSelfRel().withType("POST"),
-//			linkTo(methodOn(ProfessorController.class).getProfessorById(professor.getId())).withRel("getProfessor").withType("GET")
-//					.withTitle("Return the professor by its id."),
-//			linkTo(methodOn(ProfessorController.class).deleteProfessorById(professor.getId())).withRel("deleteProfessor").withType("DELETE")
-//					.withTitle("Delete the professor by its id."),
-//			linkTo(methodOn(ProfessorController.class).updateProfessorById(professor.getId(), null)).withRel("putProfessor").withType("PUT")
-//					.withTitle("Update the professor by its id."),
-//			Link.of("localhost:8080/login").withRel("login").withTitle("Professor login")
-//		};
-//		professor.add(links);
+		List<Link> links;
+		links = AnnotationToHateoasUtil.getLinksFromMethodClass(SignUpController.class, "createProfessor");
+		professor.add(links);
 
 		return new ResponseEntity<>(professor, HttpStatus.CREATED);
 	}
