@@ -1,0 +1,7 @@
+---
+applications:
+- name: university-simple-project
+  host: university-simple-project
+  memory: 2048MB
+  path: build/libs/university_simple_project-0.0.1-SNAPSHOT.jar
+  buildpack: java_buildpack

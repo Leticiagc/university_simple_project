@@ -20,7 +20,8 @@ public class Professor extends RepresentationModel<Professor> {
 	@Schema(
 			title = "ID único",
 			description = "Gerado automaticamente.",
-			accessMode = Schema.AccessMode.READ_ONLY)
+			accessMode = Schema.AccessMode.READ_ONLY,
+			example = "1")
 	private Long id;
 	
 	@Column(name = "name")
@@ -44,7 +45,8 @@ public class Professor extends RepresentationModel<Professor> {
 			example = "10",
 			minimum = "0",
 			maximum = "65",
-			exclusiveMinimum = true)
+			exclusiveMinimum = true,
+			hidden = true)
 	private Integer serviceTime;
 	
 	@Column(name = "discipline")
