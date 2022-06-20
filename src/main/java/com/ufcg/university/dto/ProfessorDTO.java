@@ -2,7 +2,7 @@ package com.ufcg.university.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "Objeto Professor DTO")
+@Schema(name = "Modelo ProfessorDTO", description = "Modelo de ProfessorDTO da aplicação.")
 public class ProfessorDTO {
 
 	@Schema(
@@ -20,7 +20,7 @@ public class ProfessorDTO {
 			required = true,
 			minLength = 8,
 			maxLength = 16,
-			format = "[0-9A-Za-z]"
+			format = "regex[0-9A-Za-z]"
 	)
 	private String password;
 
