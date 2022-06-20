@@ -13,6 +13,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.webmvc.api.OpenApiResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.BridgeMethodResolver;
@@ -32,6 +33,8 @@ import com.ufcg.university.entities.Student;
 import com.ufcg.university.services.ProfessorService;
 import com.ufcg.university.services.StudentService;
 
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
@@ -67,23 +70,23 @@ public class SignUpController {
 		description = "Create a Professor",
 		links = {
 			@io.swagger.v3.oas.annotations.links.Link(
-				name = "getProfessor",
+				name = "getProfessorById",
 				description = "Return the professor by its id.",
 				parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name")},
-				operationRef = "http://localhost:8080/professor/{id}/get"
+				operationRef = "/professor/{id}/GET"
 			),
 			@io.swagger.v3.oas.annotations.links.Link(
-				name = "deleteProfessor",
+				name = "deleteProfessorById",
 				description = "Delete the professor by its id.",
-				parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name")},
-				operationRef = "http://localhost:8080/professor/{id}/delete"
+        parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name")},
+				operationRef = "/professor/{id}/DELETE"
 			),
 			@io.swagger.v3.oas.annotations.links.Link(
-				name = "updateProfessor",
+				name = "updateProfessorById",
 				description = "Update the professor by its id.",
-				parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name"),
+        parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name"),
 					@LinkParameter(name = "professorDTO", expression = "#/components/schemas/ProfessorDTO")},
-				operationRef = "http://localhost:8080/professor/{id}/put"
+				operationRef = "/professor/{id}/PUT"
 			),
 			@io.swagger.v3.oas.annotations.links.Link(
 				name = "loginProfessor",
