@@ -6,7 +6,11 @@ plugins {
 
 group = 'com.ufcg'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+
+apply plugin: 'java'
+//sourceCompatibility = '11'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 configurations {
 	compileOnly {
@@ -20,9 +24,9 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   	runtimeOnly 'com.h2database:h2'
@@ -32,11 +36,12 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	
-	implementation 'org.springdoc:springdoc-openapi-ui:1.4.4'
-	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.4.4'
-	
-	implementation 'org.reflections:reflections:0.9.12'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas:2.6.4'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.5.0'
+	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.5.0'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
 }
 
 test {

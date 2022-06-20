@@ -1,6 +1,7 @@
 package com.ufcg.university.entities;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "professor")
 @Schema(name = "Objeto Professor")
-public class Professor {
+public class Professor extends RepresentationModel<Professor> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,7 +45,8 @@ public class Professor {
 			example = "10",
 			minimum = "0",
 			maximum = "65",
-			exclusiveMinimum = true)
+			exclusiveMinimum = true,
+			hidden = true)
 	private Integer serviceTime;
 	
 	@Column(name = "discipline")
