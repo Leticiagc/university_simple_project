@@ -16,13 +16,14 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
-import io.swagger.v3.oas.annotations.extensions.Extensions;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping(value = "/professor")
+@SecurityRequirement(name = "Authorization")
 public class ProfessorController {
 	
 	@Autowired
@@ -47,6 +48,25 @@ public class ProfessorController {
 				    ),
 				    @ApiResponse(responseCode = "400", description = "Bad Request"),
 				    @ApiResponse(responseCode = "403", description = "Forbidden")
+			},
+			extensions = {
+					@Extension(
+						name = "Request Info",
+						properties = {
+								@ExtensionProperty(
+										name = "response info", 
+										value = "Professor List"
+								),
+								@ExtensionProperty(
+										name = "author", 
+										value = "splab.ufcg"
+								),
+								@ExtensionProperty(
+										name = "anything", 
+										value = "anything value"
+								)
+						}
+				)
 			},
 			externalDocs = @ExternalDocumentation(description = "Documentation", url = "www.ufcg.com")
 	)
