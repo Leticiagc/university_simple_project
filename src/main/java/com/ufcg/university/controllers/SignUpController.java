@@ -1,8 +1,13 @@
 package com.ufcg.university.controllers;
 
 import com.ufcg.university.utils.AnnotationToHateoasUtil;
+import io.prometheus.client.Collector;
+import io.prometheus.client.CollectorRegistry;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
+import org.springframework.boot.actuate.metrics.MetricsEndpoint;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.hateoas.Link;
@@ -36,9 +41,6 @@ public class SignUpController {
 	@Autowired
 	private StudentService studentService;
 
-	@Autowired
-	private ApplicationContext applicationContext;
-	
 	@RequestMapping(value = "/professor", method = RequestMethod.POST)
 	@Operation( responses = {
 		@ApiResponse(

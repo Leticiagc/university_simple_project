@@ -19,3 +19,10 @@ management:
       enabled: true
     prometheus:
       enabled: true
+  info:
+    os:
+      enabled: true
+    java:
+      enabled: true
+    env:
+      enabled: true
