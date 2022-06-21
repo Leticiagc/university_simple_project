@@ -1,19 +1,13 @@
 package com.ufcg.university.controllers;
 
-<<<<<<< HEAD
 import com.ufcg.university.utils.AnnotationToHateoasUtil;
-import io.prometheus.client.Collector;
-import io.prometheus.client.CollectorRegistry;
+
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.var;
-=======
+
 import java.util.List;
 
->>>>>>> 220a2acf1b27e5d12b7b7c6a7869cbbc9f776461
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
-import org.springframework.boot.actuate.metrics.MetricsEndpoint;
-import org.springframework.context.ApplicationContext;
+
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -29,9 +23,7 @@ import com.ufcg.university.entities.Professor;
 import com.ufcg.university.entities.Student;
 import com.ufcg.university.services.ProfessorService;
 import com.ufcg.university.services.StudentService;
-import com.ufcg.university.utils.AnnotationToHateoasUtil;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
