@@ -30,7 +30,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	        "/configuration/security",
 	        "/swagger-ui.html",
 	        "/webjars/**",
-            "/actuator/**"
+            "/actuator/**",
+            "/metrics**"
     };
 
     public WebSecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
