@@ -41,6 +41,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.9'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'io.micrometer:micrometer-registry-prometheus'
+
 	// fixing vulnerabilities
 	implementation 'org.springframework.security:spring-security-web:5.7.1'
 	implementation 'org.springframework:spring-beans:5.3.20'
@@ -49,7 +50,6 @@ dependencies {
 	implementation 'org.springframework:spring-core:5.3.20'
 	implementation 'net.minidev:json-smart:2.4.8'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
-}
 
 test {
 	useJUnitPlatform()

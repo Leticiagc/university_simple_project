@@ -12,47 +12,58 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "professor")
-@Schema(name = "Objeto Professor")
+@Schema(name = "Modelo Professor", description = "Modelo Professor da aplicação.")
 public class Professor extends RepresentationModel<Professor> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Schema(
 			title = "ID único",
-			description = "Gerado automaticamente.",
-			accessMode = Schema.AccessMode.READ_ONLY)
+			description = "Gerado automaticamente",
+			accessMode = Schema.AccessMode.READ_ONLY,
+			example = "1"
+	)
 	private Long id;
 	
 	@Column(name = "name")
-	@Schema(title = "Nome",
+	@Schema(
+			title = "Nome",
+			description = "Nome do Professor",
 			example = "Francisco",
-			required = true)
+			required = true
+	)
 	private String name;
 	
 	@Column(name = "password")
-	@Schema(title = "Senha",
+	@Schema(
+			title = "Senha",
 			example = "1234Abcd",
 			required = true,
 			minLength = 8,
 			maxLength = 16,
 			description = "Senha de acesso.",
-			format = "[0-9A-Za-z]")
+			format = "[0-9A-Za-z]"
+	)
 	private String password;
 	
 	@Column(name = "serviceTime")
-	@Schema(title = "Tempo de Serviço",
+	@Schema(
+			title = "Tempo de Serviço",
 			example = "10",
 			minimum = "0",
 			maximum = "65",
 			exclusiveMinimum = true,
-			hidden = true)
+			hidden = true
+	)
 	private Integer serviceTime;
 	
 	@Column(name = "discipline")
-	@Schema(title = "Disciplina",
+	@Schema(
+			title = "Disciplina",
 			example = "Cálculo 1",
 			nullable = true,
-			allowableValues = "Cálculo 1, P1, EDA, Lógica")
+			allowableValues = "Cálculo 1, P1, EDA, Lógica"
+	)
 	private String discipline;
 	
 	public Professor() {}

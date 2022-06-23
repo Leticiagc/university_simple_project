@@ -1,25 +1,51 @@
 package com.ufcg.university.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.persistence.*;
 
 @Entity
+@Table(name = "student")
+@Schema(name = "Modelo Student", description = "Modelo de Student da aplicação.")
 public class Student {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Schema(
+			title = "ID único",
+			description = "Gerado automaticamente",
+			accessMode = Schema.AccessMode.READ_ONLY,
+			example = "2"
+	)
 	private Long id;
 	
 	@Column(name = "name")
+	@Schema(
+			title = "Nome",
+			description = "Nome do Student",
+			example = "Josué",
+			required = true
+	)
 	private String name;
 	
 	@Column(name = "password")
+	@Schema(
+			title = "Senha",
+			description = "Senha de acesso",
+			required = true,
+			minLength = 8,
+			maxLength = 24,
+			format = "regex[0-9A-Za-z]"
+	)
 	private String password;
 	
 	@Column(name = "registration")
+	@Schema(
+			title = "Matricula",
+			description = "Matricula do Student",
+			example = "118111398",
+			maxLength = 9
+	)
 	private String registration;
 	
 	public Student() {}
