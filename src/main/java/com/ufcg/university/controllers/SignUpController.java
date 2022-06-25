@@ -1,6 +1,15 @@
 package com.ufcg.university.controllers;
 
+import com.ufcg.university.utils.AnnotationToHateoasUtil;
+
+import io.swagger.v3.oas.annotations.Operation;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,12 +24,12 @@ import com.ufcg.university.entities.Student;
 import com.ufcg.university.services.ProfessorService;
 import com.ufcg.university.services.StudentService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.links.LinkParameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping(value = "/signup")
-@Api(value = "Sign Up")
+@DependsOn({"openApiResource"})
 public class SignUpController {
 	
 	@Autowired
@@ -28,15 +37,83 @@ public class SignUpController {
 	
 	@Autowired
 	private StudentService studentService;
-	
+
 	@RequestMapping(value = "/professor", method = RequestMethod.POST)
-	@ApiOperation(value = "Create a Professor")
+	@Operation( responses = {
+		@ApiResponse(
+		description = "Create a Professor",
+		links = {
+			@io.swagger.v3.oas.annotations.links.Link(
+				name = "getProfessorById",
+				description = "Return the professor by its id.",
+				parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name")},
+				operationRef = "/professor/{id}/GET"
+			),
+			@io.swagger.v3.oas.annotations.links.Link(
+				name = "deleteProfessorById",
+				description = "Delete the professor by its id.",
+				parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name")},
+				operationRef = "/professor/{id}/DELETE"
+			),
+			@io.swagger.v3.oas.annotations.links.Link(
+				name = "updateProfessorById",
+				description = "Update the professor by its id.",
+				parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name"),
+					@LinkParameter(name = "professorDTO", expression = "#/components/schemas/ProfessorDTO")},
+				operationRef = "/professor/{id}/PUT"
+			),
+			@io.swagger.v3.oas.annotations.links.Link(
+				name = "loginProfessor",
+				description = "Professor login by name and password",
+				operationRef = "http://localhost:8080/login/post"
+			)
+		}
+	)})
 	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
-		return new ResponseEntity<>(this.professorService.createProfessor(professorDTO), HttpStatus.CREATED);
+		Professor professor = this.professorService.createProfessor(professorDTO);
+		List<Link> links;
+		links = AnnotationToHateoasUtil.getLinksFromMethodClass(SignUpController.class, "createProfessor");
+		professor.add(links);
+
+		return new ResponseEntity<>(professor, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/student", method = RequestMethod.POST)
-	@ApiOperation(value = "Create a Student")
+	@Operation( 
+		summary = "Create a Student",
+		description = "Add a student to the system",
+		responses = {
+			@ApiResponse(
+					description = "Create a Student",
+					links = {
+							@io.swagger.v3.oas.annotations.links.Link(
+								name = "getStudent",
+								description = "Return the student by its id.",
+								parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name")},
+								operationRef = "http://localhost:8080/student/{id}/get"
+							),
+							@io.swagger.v3.oas.annotations.links.Link(
+								name = "deleteStudent",
+								description = "Delete the student by its id.",
+								parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name")},
+								operationRef = "http://localhost:8080/student/{id}/delete"
+							),
+							@io.swagger.v3.oas.annotations.links.Link(
+								name = "updateStudent",
+								description = "Update the student by its id.",
+								parameters = {@LinkParameter(name = "id", expression = "$request.path.param_name"),
+									@LinkParameter(name = "studentDTO", expression = "#/components/schemas/StudentDTO")},
+								operationRef = "http://localhost:8080/student/{id}/put"
+							),
+							@io.swagger.v3.oas.annotations.links.Link(
+								name = "loginStudent",
+								description = "Student login by name and password",
+								operationRef = "http://localhost:8080/login/post"
+							)
+					}
+			)
+		}
+	)
 	public ResponseEntity<Student> createStudent(@RequestBody StudentDTO studentDTO) {
 		return new ResponseEntity<>(this.studentService.createStudent(studentDTO), HttpStatus.CREATED);
 	}

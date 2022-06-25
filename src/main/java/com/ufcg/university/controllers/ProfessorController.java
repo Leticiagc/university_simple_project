@@ -6,97 +6,122 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufcg.university.annotations.ProfessorOperation;
 import com.ufcg.university.dto.ProfessorDTO;
 import com.ufcg.university.services.ProfessorService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Extension;
-import io.swagger.annotations.ExtensionProperty;
-import io.swagger.annotations.ResponseHeader;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping(value = "/professor")
-@Api(value = "Professor", protocols = "HTTP/HTTPS")
+@SecurityRequirement(name = "Authorization")
 public class ProfessorController {
 	
 	@Autowired
 	private ProfessorService professorService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	@ApiOperation(value = "List All Professors",
-				  notes = "Multiple Professors can be provided in a list",
-				  response = ProfessorDTO.class,
-				  responseContainer = "List",
-				  httpMethod = "GET",
-				  extensions = @Extension(
-						  name = "Documentation",
-						  properties = {
-								  @ExtensionProperty(name = "link", value = "https://openweathermap.org/api")
-						  }
-				  )
+	@Operation(
+			summary = "List All Professors",
+			description = "List all professors from the system",
+			responses = {
+				    @ApiResponse(
+				    		responseCode = "200", 
+				    		description = "Request OK",
+				    		headers = {
+				    				@Header(
+				    						name = "Header",
+				    						description = "Return Request Informations",
+				    						schema = @Schema(
+				    								// MANY THINGS TO SET UP
+				    						),
+				    						required = true
+				    				)
+				    		}
+				    ),
+				    @ApiResponse(responseCode = "400", description = "Bad Request"),
+				    @ApiResponse(responseCode = "403", description = "Forbidden")
+			},
+			extensions = {
+					@Extension(
+						name = "Request Info",
+						properties = {
+								@ExtensionProperty(
+										name = "response info", 
+										value = "Professor List"
+								),
+								@ExtensionProperty(
+										name = "author", 
+										value = "splab.ufcg"
+								),
+								@ExtensionProperty(
+										name = "anything", 
+										value = "anything value"
+								)
+						}
+				)
+			},
+			externalDocs = @ExternalDocumentation(description = "Documentation", url = "www.ufcg.com")
 	)
-	@ApiModelProperty(allowableValues = "list of professors")
 	public ResponseEntity<List<ProfessorDTO>> getAllProfessors() {
 		return new ResponseEntity<>(this.professorService.listProfessors(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	@ApiOperation(value = "Get Professor By Id")
-	@ApiResponses(
-			value = {
-					@ApiResponse(code = 200, message = "It's OK", response = ProfessorDTO.class,
-							responseHeaders = {
-									@ResponseHeader(description = "It's a header")
-							}
-					),
-					@ApiResponse(code = 400, message = "Invalid ID"),
-					@ApiResponse(code = 404, message = "Professor Not Found") 
-			}
-	)
+	@ProfessorOperation
 	public ResponseEntity<?> getProfessorById(@PathVariable("id") Long id) {
+		
 		try {
 			return new ResponseEntity<>(this.professorService.getProfessorById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>("Professor Not Found", HttpStatus.NO_CONTENT);
+			return new ResponseEntity<String>("Professor Not Found", HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete Professor By Id")
+	@Operation(
+			summary = "Get Professor By Id",
+			description = "Get professor info by id",
+			responses = {
+				    @ApiResponse(responseCode = "200", description = "It's Ok"),
+				    @ApiResponse(responseCode = "404", description = "Professor Not Found")
+			}
+	)
 	public ResponseEntity<?> deleteProfessorById(@RequestParam("id") Long id) {
 		try {
 			return new ResponseEntity<>(this.professorService.deleteProfessor(id), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>("Professor Not Found", HttpStatus.NO_CONTENT);
+			return new ResponseEntity<String>("Professor Not Found", HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
-	@ApiOperation(value = "Update Professor")
-	@ApiImplicitParams({
-	    @ApiImplicitParam(name = "name", value = "Professor's name", required = true, dataType = "string"),
-	    @ApiImplicitParam(name = "password", value = "Professor's password", required = true, dataType = "string"),
-	    @ApiImplicitParam(name = "serviceTime", value = "Professor's service time", required = true, dataType = "integer"),
-	    @ApiImplicitParam(name = "discipline", value = "Professor's discipline", required = true, dataType = "string")
-	})
-	public ResponseEntity<?> updateProfessorById(@RequestParam("id") Long id, 
-												 @ApiParam(value = "Updated professor object", required = true) ProfessorDTO professorDTO) {
+	@Operation(
+			summary = "Update Professor By Id",
+			description = "Update professor info by id",
+			responses = {
+				    @ApiResponse(responseCode = "200", description = "It's Ok"),
+				    @ApiResponse(responseCode = "404", description = "Professor Not Found")
+			}
+	)
+	public ResponseEntity<?> updateProfessorById(@RequestParam("id") Long id, @RequestBody ProfessorDTO professorDTO) {
 		try {
 			return new ResponseEntity<>(this.professorService.updateProfessor(id, professorDTO), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>("Professor Not Found", HttpStatus.NO_CONTENT);
+			return new ResponseEntity<String>("Professor Not Found", HttpStatus.NOT_FOUND);
 		}
 	}
 }
