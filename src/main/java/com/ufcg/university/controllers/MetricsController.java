@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufcg.university.entities.Metric;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -34,9 +36,9 @@ public class MetricsController {
     @GetMapping("/detailed")
     public ResponseEntity<?> getDetailedMetrics() {
 
-        List<Collector.MetricFamilySamples> samplesList = new ArrayList<>();
+        List<Metric> samplesList = new ArrayList<>();
         
-        this.collectorRegistry.metricFamilySamples().asIterator().forEachRemaining(s -> samplesList.add(s));
+        this.collectorRegistry.metricFamilySamples().asIterator().forEachRemaining(s -> samplesList.add(new Metric(s)));
 
         return new ResponseEntity<>(samplesList, HttpStatus.OK);
     }
@@ -53,6 +55,7 @@ public class MetricsController {
         
         return new ResponseEntity<>(metrics, HttpStatus.OK);
     }
+
     
 
 }
