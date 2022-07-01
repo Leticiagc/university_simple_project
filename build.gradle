@@ -17,6 +17,8 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	//resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+
 }
 
 allprojects {
@@ -63,7 +65,7 @@ dependencies {
 	implementation 'net.minidev:json-smart:2.4.8'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
 	// implementation 'org.apigenerator.playground:metrics_library:1.2'
-    implementation 'com.github.api-generator-playground:metrics_library:0de489a3da'
+    implementation 'com.github.api-generator-playground:metrics_library:1.0'
 
 }
 
