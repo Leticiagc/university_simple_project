@@ -10,8 +10,8 @@ version = '0.0.1-SNAPSHOT'
 
 apply plugin: 'java'
 //sourceCompatibility = '11'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 configurations {
 	compileOnly {
@@ -19,9 +19,19 @@ configurations {
 	}
 }
 
-repositories {
-	mavenCentral()
-	mavenLocal()
+allprojects {
+    repositories {
+		mavenCentral()
+		mavenLocal()
+		//maven {SNAPSHOT
+        //    url = uri("https://maven.pkg.github.com/api-generator-playground/metrics_library")
+        //    credentials {
+        //        username = "vitoremanuellds"
+        //        password = "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"
+        //    }
+        //}
+		maven { url 'https://jitpack.io' }
+    }
 }
 
 dependencies {
@@ -52,9 +62,13 @@ dependencies {
 	implementation 'org.springframework:spring-core:5.3.20'
 	implementation 'net.minidev:json-smart:2.4.8'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
-	implementation 'org.apigenerator.playground:metrics_library:1.0'
+	// implementation 'org.apigenerator.playground:metrics_library:1.2'
+    implementation 'com.github.api-generator-playground:metrics_library:0de489a3da'
+
 }
 
 test {
 	useJUnitPlatform()
 }
+
+
