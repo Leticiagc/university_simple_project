@@ -25,13 +25,7 @@ allprojects {
     repositories {
 		mavenCentral()
 		mavenLocal()
-		//maven {SNAPSHOT
-        //    url = uri("https://maven.pkg.github.com/api-generator-playground/metrics_library")
-        //    credentials {
-        //        username = "vitoremanuellds"
-        //        password = "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"
-        //    }
-        //}
+		
 		maven { url 'https://jitpack.io' }
     }
 }
