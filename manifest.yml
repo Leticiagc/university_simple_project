@@ -5,3 +5,6 @@ applications:
   memory: 2048MB
   path: build/libs/university_simple_project-0.0.1-SNAPSHOT.jar
   buildpack: java_buildpack
+  env:
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
+    PROMETHEUS_HOST: 'http://localhost:9090'
