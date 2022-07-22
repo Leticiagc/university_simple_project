@@ -19,14 +19,14 @@ public class Student {
 	)
 	private Long id;
 	
-	@Column(name = "name")
+	@Column(name = "cpf", unique = true)
 	@Schema(
-			title = "Nome",
-			description = "Nome do Student",
-			example = "Josué",
+			title = "Cpf",
+			description = "Cpf do Student",
+			example = "111222333-00",
 			required = true
 	)
-	private String name;
+	private String cpf;
 	
 	@Column(name = "password")
 	@Schema(
@@ -50,9 +50,9 @@ public class Student {
 	
 	public Student() {}
 	
-	public Student(String name, String password, String registration) {
+	public Student(String cpf, String password, String registration) {
 		this.password = password;
-		this.name = name;
+		this.cpf = cpf;
 		this.registration = registration;
 	}
 	
@@ -60,16 +60,16 @@ public class Student {
 		return id;
 	}
 
-	public String getName() {
-		return name;
+	public String getCpf() {
+		return cpf;
 	}
 
 	public String getRegistration() {
 		return registration;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public void setRegistration(String registration) {

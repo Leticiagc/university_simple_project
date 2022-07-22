@@ -2,22 +2,22 @@ package com.ufcg.university.entities;
 
 public class User {
 	
-	private String name;
+	private String cpf;
 	private String password;
 	
 	public User() {}
 	
-	public User(String name, String password) {
+	public User(String cpf, String password) {
 		super();
-		this.name = name;
+		this.cpf = cpf;
 		this.password = password;
 	}
 
-	public String getName() {
-		return name;
+	public String getCpf() {
+		return cpf;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 	public String getPassword() {
 		return password;

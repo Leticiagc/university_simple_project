@@ -8,5 +8,5 @@ import com.ufcg.university.entities.Professor;
 @Repository
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 	
-	Professor findByName(String name);
+	Professor findByCpf(String cpf);
 }

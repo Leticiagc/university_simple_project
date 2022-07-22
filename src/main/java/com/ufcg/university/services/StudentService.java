@@ -55,7 +55,7 @@ public class StudentService {
 			throw new Exception("Student Not Found");
 		} else {
 			Student studentUpdated = student.get();
-			studentUpdated.setName(studentDTO.getName());
+			studentUpdated.setCpf(studentDTO.getCpf());
 			studentUpdated.setRegistration(studentDTO.getRegistration());
 			studentUpdated.setPassword(bCryptPasswordEncoder.encode(studentDTO.getPassword()));
 			this.studentRepository.save(studentUpdated);

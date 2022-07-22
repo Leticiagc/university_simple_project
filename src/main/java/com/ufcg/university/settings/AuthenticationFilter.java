@@ -37,7 +37,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 						com.ufcg.university.entities.User.class);
         	
             return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(credentials.getName(), credentials.getPassword(), new ArrayList<>()));
+                new UsernamePasswordAuthenticationToken(credentials.getCpf(), credentials.getPassword(), new ArrayList<>()));
         } catch (IOException e) {
             throw new RuntimeException("Could not read request" + e);
         }

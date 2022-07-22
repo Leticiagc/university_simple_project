@@ -25,14 +25,14 @@ public class Professor extends RepresentationModel<Professor> {
 	)
 	private Long id;
 	
-	@Column(name = "name")
+	@Column(name = "cpf", unique = true)
 	@Schema(
-			title = "Nome",
-			description = "Nome do Professor",
-			example = "Francisco",
+			title = "Cpf",
+			description = "Cpf do Professor",
+			example = "111222333-00",
 			required = true
 	)
-	private String name;
+	private String cpf;
 	
 	@Column(name = "password")
 	@Schema(
@@ -68,8 +68,8 @@ public class Professor extends RepresentationModel<Professor> {
 	
 	public Professor() {}
 	
-	public Professor(String name, String password, Integer serviceTime, String discipline) {
-		this.name = name;
+	public Professor(String cpf, String password, Integer serviceTime, String discipline) {
+		this.cpf = cpf;
 		this.password = password;
 		this.serviceTime = serviceTime;
 		this.discipline = discipline;
@@ -79,8 +79,8 @@ public class Professor extends RepresentationModel<Professor> {
 		return id;
 	}
 
-	public String getName() {
-		return name;
+	public String getCpf() {
+		return cpf;
 	}
 	
 	public Integer getServiceTime() {
@@ -91,8 +91,8 @@ public class Professor extends RepresentationModel<Professor> {
 		return discipline;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public void setServiceTime(Integer serviceTime) {

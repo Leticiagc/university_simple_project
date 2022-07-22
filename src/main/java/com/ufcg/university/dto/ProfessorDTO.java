@@ -6,12 +6,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class ProfessorDTO {
 
 	@Schema(
-			title = "Nome",
-			description = "Nome do professor",
-			example = "Pedro",
+			title = "CPF",
+			description = "CPF do professor",
+			example = "111222333-00",
 			required = true
 	)
-	private String name;
+	private String cpf;
 
 	@Schema(
 			title = "Senha",
@@ -43,19 +43,19 @@ public class ProfessorDTO {
 	
 	public ProfessorDTO() {}
 
-	public ProfessorDTO(String name, String password, Integer serviceTime, String discipline) {
-		this.name = name;
+	public ProfessorDTO(String cpf, String password, Integer serviceTime, String discipline) {
+		this.cpf = cpf;
 		this.password = password;
 		this.serviceTime = serviceTime;
 		this.discipline = discipline;
 	}
 
-	public String getName() {
-		return name;
+	public String getCpf() {
+		return cpf;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public Integer getServiceTime() {

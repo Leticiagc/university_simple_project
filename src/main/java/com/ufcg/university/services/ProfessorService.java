@@ -56,7 +56,7 @@ public class ProfessorService {
 			throw new Exception("Professor Not Found");
 		} else {
 			Professor professorUpdated = professor.get();
-			professorUpdated.setName(professorDTO.getName());
+			professorUpdated.setCpf(professorDTO.getCpf());
 			professorUpdated.setDiscipline(professorDTO.getDiscipline());
 			professorUpdated.setServiceTime(professorDTO.getServiceTime());
 			professorUpdated.setPassword(bCryptPasswordEncoder.encode(professorDTO.getPassword()));

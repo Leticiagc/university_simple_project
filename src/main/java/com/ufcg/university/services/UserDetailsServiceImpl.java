@@ -23,16 +23,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private ProfessorRepository professorRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Student student = studentRepository.findByName(username);
+    public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
+        Student student = studentRepository.findByCpf(cpf);
         if (student != null) {
-        	return new org.springframework.security.core.userdetails.User(student.getName(), student.getPassword(), Collections.emptyList());
+        	return new org.springframework.security.core.userdetails.User(student.getCpf(), student.getPassword(), Collections.emptyList());
         }
-        Professor professor = professorRepository.findByName(username);
+        Professor professor = professorRepository.findByCpf(cpf);
         if (professor != null) {
-        	return new org.springframework.security.core.userdetails.User(professor.getName(), professor.getPassword(), Collections.emptyList());
+        	return new org.springframework.security.core.userdetails.User(professor.getCpf(), professor.getPassword(), Collections.emptyList());
         }
-        throw new UsernameNotFoundException(username);
+        throw new UsernameNotFoundException(cpf);
     }
     
 }

@@ -8,6 +8,6 @@ import com.ufcg.university.entities.Student;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-	Student findByName(String name);
+	Student findByCpf(String cpf);
 
 }
