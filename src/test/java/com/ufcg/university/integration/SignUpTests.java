@@ -12,7 +12,6 @@ import org.api.mocktests.models.Operation;
 import org.api.mocktests.models.Request;
 import org.api.mocktests.utils.RequestUtils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
