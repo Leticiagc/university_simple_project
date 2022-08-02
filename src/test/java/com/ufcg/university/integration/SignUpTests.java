@@ -2,13 +2,17 @@ package com.ufcg.university.integration;
 
 import com.ufcg.university.dto.ProfessorDTO;
 import com.ufcg.university.dto.StudentDTO;
-import com.ufcg.university.entities.Professor;
 import com.ufcg.university.entities.User;
+import com.ufcg.university.repositories.ProfessorRepository;
+import com.ufcg.university.repositories.StudentRepository;
 import com.ufcg.university.services.ProfessorService;
+import com.ufcg.university.services.StudentService;
 import org.api.mocktests.annotations.AutoConfigureRequest;
 import org.api.mocktests.models.Operation;
 import org.api.mocktests.models.Request;
 import org.api.mocktests.utils.RequestUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -38,7 +42,22 @@ public class SignUpTests {
     @Autowired
     private ProfessorService professorService;
 
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private ProfessorRepository professorRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
     private final RequestUtils requestUtils = new RequestUtils(this);
+
+    @AfterEach
+    public void afterTests() {
+        professorRepository.deleteAll();
+        studentRepository.deleteAll();
+    }
 
     public static Stream<Arguments> professorCases() {
         return Stream.of(
@@ -82,7 +101,7 @@ public class SignUpTests {
                     .operation(Operation.POST)
                     .endpoint("/signup/professor")
                     .body(professorDTO)
-                    .compileRequest())
+                    .execute())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is(professorDTO.getName())))
                 .andExpect(jsonPath("$.serviceTime", is(professorDTO.getServiceTime())))
@@ -96,8 +115,7 @@ public class SignUpTests {
         mockMvc.perform(new Request(requestUtils)
                     .operation(Operation.POST)
                     .endpoint("/signup/student")
-                    .body(studentDTO)
-                    .compileRequest())
+                    .body(studentDTO).execute())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is(studentDTO.getName())))
                 .andExpect(jsonPath("$.registration", is(studentDTO.getRegistration())));
@@ -113,10 +131,47 @@ public class SignUpTests {
         Objects.requireNonNull(mockMvc.perform(new Request(requestUtils)
                 .operation(Operation.POST)
                 .endpoint("/login")
-                .body(new User(professorDTO.getName(), professorDTO.getPassword()))
-                .compileRequest())
+                .body(new User(professorDTO.getName(), professorDTO.getPassword())).execute())
             .andExpect(status().is2xxSuccessful())
             .andReturn().getResponse().getHeader("Authorization"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("studentsCases")
+    @DisplayName("test students login")
+    public void endpointWhenLoggingStudent(StudentDTO studentDTO) throws Exception {
+
+        studentService.createStudent(studentDTO);
+
+        Objects.requireNonNull(mockMvc.perform(new Request(requestUtils)
+                .operation(Operation.POST).endpoint("/login")
+                .body(new User(studentDTO.getName(), studentDTO.getPassword())).execute())
+            .andExpect(status().is2xxSuccessful())
+            .andReturn().getResponse().getHeader("Authorization"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("teachersNullablesCases")
+    @DisplayName("test invalid teachers login")
+    public void endpointWhenLogginInvalidTeachers(User user) throws Exception {
+
+        mockMvc.perform(new Request(requestUtils)
+                .operation(Operation.POST)
+                .endpoint("/login")
+                .body(user).execute())
+            .andExpect(status().isUnauthorized());
+    }
+
+    @ParameterizedTest
+    @MethodSource("studentsNullablesCases")
+    @DisplayName("test invalid students login")
+    public void endpointWhenLoggingInvalidStudents(User user) throws Exception {
+
+        mockMvc.perform(new Request(requestUtils)
+                .operation(Operation.POST)
+                .endpoint("/login")
+                .body(user).execute())
+            .andExpect(status().isUnauthorized());
     }
 }
 
