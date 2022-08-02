@@ -3,8 +3,9 @@ package com.ufcg.university.integration;
 import com.ufcg.university.dto.ProfessorDTO;
 import com.ufcg.university.dto.StudentDTO;
 import com.ufcg.university.entities.Professor;
-import com.ufcg.university.entities.Student;
-import org.api.mocktests.annotations.AutoConfigureContextType;
+import com.ufcg.university.entities.User;
+import com.ufcg.university.services.ProfessorService;
+import org.api.mocktests.annotations.AutoConfigureRequest;
 import org.api.mocktests.models.Operation;
 import org.api.mocktests.models.Request;
 import org.api.mocktests.utils.RequestUtils;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -27,11 +29,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @EnableAutoConfiguration
 @AutoConfigureMockMvc
-@AutoConfigureContextType
+@AutoConfigureRequest
 public class SignUpTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ProfessorService professorService;
 
     private final RequestUtils requestUtils = new RequestUtils(this);
 
@@ -49,6 +54,23 @@ public class SignUpTests {
                 Arguments.of(new StudentDTO("Leticia","calixto123","1181678")),
                 Arguments.of(new StudentDTO("Maely","1234maely","1911765")),
                 Arguments.of(new StudentDTO("Vitor", "manel123","1911777"))
+        );
+    }
+
+    public static Stream<Arguments> teachersNullablesCases() {
+        return Stream.of(
+                Arguments.of(new User("Mathias","123456789")),
+                Arguments.of(new User("Ramon",null)),
+                Arguments.of(new User("José Ennyo", "123ennyo")),
+                Arguments.of(new User(null,"boy12345"))
+        );
+    }
+
+    public static Stream<Arguments> studentsNullablesCases() {
+        return Stream.of(
+                Arguments.of(new User("Leticia","CALIXTO123")),
+                Arguments.of(new User("Maely","")),
+                Arguments.of(new User("VITOR","manel123"))
         );
     }
 
@@ -79,6 +101,22 @@ public class SignUpTests {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is(studentDTO.getName())))
                 .andExpect(jsonPath("$.registration", is(studentDTO.getRegistration())));
+    }
+
+    @ParameterizedTest
+    @MethodSource("professorCases")
+    @DisplayName("test teachers login")
+    public void endpointWhenLoggingTeacher(ProfessorDTO professorDTO) throws Exception {
+
+        professorService.createProfessor(professorDTO);
+
+        Objects.requireNonNull(mockMvc.perform(new Request(requestUtils)
+                .operation(Operation.POST)
+                .endpoint("/login")
+                .body(new User(professorDTO.getName(), professorDTO.getPassword()))
+                .compileRequest())
+            .andExpect(status().is2xxSuccessful())
+            .andReturn().getResponse().getHeader("Authorization"));
     }
 }
 
