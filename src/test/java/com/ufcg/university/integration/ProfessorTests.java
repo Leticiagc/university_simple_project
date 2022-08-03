@@ -22,6 +22,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.stream.Stream;
 
@@ -85,25 +87,28 @@ public class ProfessorTests {
 
         mockMvc.perform(new Request(requestUtils)
                 .operation(Operation.GET)
-                .endpoint("/professor/{id}")
-                .params(professor.getId()).execute())
+                .endpoint("/professor/{id}").pathParams(professor.getId())
+                .execute())
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
             .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
     }
 
-    //@Test
+    @Test
     @DisplayName("test delete teacher by id")
     @AuthenticatedTest
     public void endpointWhenDeletingTeacherById() throws Exception {
 
         Professor professor = professorService.createProfessor(new ProfessorDTO("Gabriel","boy12345",4,"Informática"));
 
+        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("id", professor.getId().toString());
+
         mockMvc.perform(new Request(requestUtils)
                 .operation(Operation.DELETE)
-                .endpoint("/professor/{id}")
-                .params(professor.getId()).execute())
+                .endpoint("/professor/")
+                .params(requestParams).execute())
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
