@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @EnableAutoConfiguration
 @AutoConfigureMockMvc
-@AutoConfigureRequest(header = {"Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNYXRoaWFzIiwiaWF0IjoxNjU5NDUwMTUyLCJleHAiOjE2NjAzMTQxNTJ9.0Lp3YpCVuf00t15vEmxxtE9-lFRPJrLLg2wnKNlUH2c"})
+@AutoConfigureRequest(mediatype = "application/json", header = {"Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNYXRoaWFzIiwiaWF0IjoxNjU5NDUwMTUyLCJleHAiOjE2NjAzMTQxNTJ9.0Lp3YpCVuf00t15vEmxxtE9-lFRPJrLLg2wnKNlUH2c"})
 public class ProfessorTests {
 
     @Autowired
@@ -87,7 +87,7 @@ public class ProfessorTests {
                 .operation(Operation.GET)
                 .endpoint("/professor/{id}")
                 .params(professor.getId()).execute())
-            .andExpect(status().is2xxSuccessful())
+            .andExpect(status().is4xxClientError())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
             .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
