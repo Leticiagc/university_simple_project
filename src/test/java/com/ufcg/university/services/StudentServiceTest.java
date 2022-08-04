@@ -1,25 +1,22 @@
 package com.ufcg.university.services;
 
-import com.ufcg.university.dto.ProfessorDTO;
 import com.ufcg.university.dto.StudentDTO;
-import com.ufcg.university.entities.Professor;
 import com.ufcg.university.entities.Student;
-import com.ufcg.university.mapper.ProfessorMapper;
 import com.ufcg.university.mapper.StudentMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpringBootTest
 public class StudentServiceTest {
 
     @Autowired
-    private StudentService studentService = new StudentService();
+    private StudentService studentService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private StudentDTO studentDTO;

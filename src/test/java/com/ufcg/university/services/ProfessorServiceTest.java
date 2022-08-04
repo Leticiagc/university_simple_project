@@ -5,18 +5,14 @@ import com.ufcg.university.entities.Professor;
 import com.ufcg.university.mapper.ProfessorMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//@SpringBootConfiguration
-//@SpringBootTest
-//@EnableAutoConfiguration
+@SpringBootTest
 public class ProfessorServiceTest {
     @Autowired
     private ProfessorService profService;
