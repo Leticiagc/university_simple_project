@@ -1,5 +1,6 @@
 package com.ufcg.university.integration;
 
+import com.ufcg.university.dto.ProfessorDTO;
 import com.ufcg.university.dto.StudentDTO;
 import com.ufcg.university.entities.Student;
 import com.ufcg.university.entities.User;
@@ -15,6 +16,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,7 +27,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 
+import java.util.stream.Stream;
+
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,11 +55,18 @@ public class StudentTests {
     @BeforeEach
     public void beforeTests() {
 
-        studentService.createStudent(new StudentDTO("Leticia","calixto123","1181678"));
-        studentService.createStudent(new StudentDTO("Maely","1234maely","1911765"));
-        studentService.createStudent(new StudentDTO("Vitor", "manel123","1911777"));
-
         studentService.createStudent(new StudentDTO("Mathias","12345678","11811111"));
+        studentService.createStudent(new StudentDTO("Ramon","nobrega123","23456789"));
+        studentService.createStudent(new StudentDTO("Ennyo José", "123ennyo","23456789"));
+        studentService.createStudent(new StudentDTO("Gabriel","boy12345","12345673"));
+    }
+
+    public static Stream<Arguments> studentsCases() {
+        return Stream.of(
+                Arguments.of(new StudentDTO("Leticia","calixto123","1181678")),
+                Arguments.of(new StudentDTO("Maely","1234maely","1911765")),
+                Arguments.of(new StudentDTO("Vitor", "manel123","1911777"))
+        );
     }
 
     @AfterEach
@@ -69,11 +83,24 @@ public class StudentTests {
     }
 
     @Test
+    @DisplayName("test get all students")
+    @AuthenticatedTest
+    public void endpointWhenGettingAllStudents() throws Exception {
+
+        mockMvc.perform(new Request(requestUtils)
+                .operation(Operation.GET)
+                .endpoint("/student/").execute())
+            .andExpect(status().is2xxSuccessful())
+            .andExpect(jsonPath("$.*", hasSize(4)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("studentsCases")
     @DisplayName("test get student by id")
     @AuthenticatedTest
-    public void endpointWhenGettingStudentById() throws Exception {
+    public void endpointWhenGettingStudentById(StudentDTO studentDTO) throws Exception {
 
-        Student student = studentService.createStudent(new StudentDTO("Gabriel","boy12345","11817654"));
+        Student student = studentService.createStudent(studentDTO);
 
         mockMvc.perform(new Request(requestUtils)
                 .operation(Operation.GET)
@@ -84,12 +111,13 @@ public class StudentTests {
             .andExpect(jsonPath("$.registration", is(student.getRegistration())));
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("studentsCases")
     @DisplayName("test delete student by id")
     @AuthenticatedTest
-    public void endpointWhenDeletingStudentById() throws Exception {
+    public void endpointWhenDeletingStudentById(StudentDTO studentDTO) throws Exception {
 
-        Student student = studentService.createStudent(new StudentDTO("Gabriel","boy12345","11817654"));
+        Student student = studentService.createStudent(studentDTO);
 
         LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("id", student.getId().toString());
@@ -101,5 +129,27 @@ public class StudentTests {
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(student.getName())))
             .andExpect(jsonPath("$.registration", is(student.getRegistration())));
+    }
+
+    @ParameterizedTest
+    @MethodSource("studentsCases")
+    @DisplayName("test put student by id")
+    @AuthenticatedTest
+    public void endpointWhenUpdatingStudentById(StudentDTO studentDTO) throws Exception {
+
+        Student student = studentService.createStudent(studentDTO);
+        StudentDTO studentDTO1 = new StudentDTO("Gab", "12345678","1234567890");
+
+        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("id", student.getId().toString());
+
+        mockMvc.perform(new Request(requestUtils)
+                .operation(Operation.PUT)
+                .endpoint("/student/")
+                .params(requestParams)
+                .body(studentDTO1).execute())
+            .andExpect(status().is2xxSuccessful())
+            .andExpect(jsonPath("$.name", is(studentDTO1.getName())))
+            .andExpect(jsonPath("$.registration", is(studentDTO1.getRegistration())));
     }
 }

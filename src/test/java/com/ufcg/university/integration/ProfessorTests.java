@@ -89,8 +89,8 @@ public class ProfessorTests {
         mockMvc.perform(new Request(requestUtils)
                 .operation(Operation.GET)
                 .endpoint("/professor/").execute())
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.*", hasSize(4)));
+            .andExpect(status().is2xxSuccessful())
+            .andExpect(jsonPath("$.*", hasSize(4)));
     }
 
     @ParameterizedTest
