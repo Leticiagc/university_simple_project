@@ -1,6 +1,7 @@
 package com.ufcg.university.integration;
 
 import com.ufcg.university.dto.ProfessorDTO;
+import com.ufcg.university.dto.StudentDTO;
 import com.ufcg.university.entities.Professor;
 import com.ufcg.university.entities.User;
 import com.ufcg.university.repositories.ProfessorRepository;
@@ -53,6 +54,9 @@ public class ProfessorTests {
     @BeforeEach
     public void beforeTests() {
         professorService.createProfessor(new ProfessorDTO("Mathias","12345678",5,"Computação"));
+        professorService.createProfessor(new ProfessorDTO("Leticia","calixto123",5,"Computação"));
+        professorService.createProfessor(new ProfessorDTO("Maely","1234maely",5,"Computação"));
+        professorService.createProfessor(new ProfessorDTO("Vitor", "manel123",5,"Computação"));
     }
 
     @AfterEach
@@ -86,7 +90,7 @@ public class ProfessorTests {
                 .operation(Operation.GET)
                 .endpoint("/professor/").execute())
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.*", hasSize(3)));
+                .andExpect(jsonPath("$.*", hasSize(4)));
     }
 
     @ParameterizedTest
