@@ -70,7 +70,7 @@ public class StudentServiceTest {
         StudentDTO studentDTO2 = new StudentDTO("Pedro","121214","117210258");
         Student student2 = studentService.createStudent(studentDTO2);
 
-        assertNotNull(studentService.listStudents());
+        assertEquals(studentService.listStudents().size(), 2);
     }
 
     @Test
