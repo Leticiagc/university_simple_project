@@ -1,10 +1,13 @@
 package com.ufcg.university.integration;
 
+import com.ufcg.university.controllers.ProfessorController;
 import com.ufcg.university.dto.ProfessorDTO;
+import com.ufcg.university.dto.StudentDTO;
 import com.ufcg.university.entities.Professor;
 import com.ufcg.university.entities.User;
 import com.ufcg.university.repositories.ProfessorRepository;
 import com.ufcg.university.services.ProfessorService;
+import com.ufcg.university.settings.AuthenticationFilter;
 import org.api.mocktests.annotations.Authenticate;
 import org.api.mocktests.annotations.AuthenticatedTest;
 import org.api.mocktests.annotations.AutoConfigureRequest;
@@ -15,17 +18,23 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +47,7 @@ public class ProfessorTests {
     @Autowired
     private MockMvc mockMvc;
 
+
     @Autowired
     private ProfessorService professorService;
 
@@ -49,9 +59,9 @@ public class ProfessorTests {
     @BeforeEach
     public void beforeTests() {
         professorService.createProfessor(new ProfessorDTO("Mathias","12345678",5,"Computação"));
-        professorService.createProfessor(new ProfessorDTO("Ramon","nobrega123",10,"ADS"));
-        professorService.createProfessor(new ProfessorDTO("Ennyo José", "123ennyo",5,"Engenharia de Software"));
-        //professorService.createProfessor(new ProfessorDTO("Gabriel","boy12345",4,"Informática"));
+        professorService.createProfessor(new ProfessorDTO("Leticia","calixto123",5,"Computação"));
+        professorService.createProfessor(new ProfessorDTO("Maely","1234maely",5,"Computação"));
+        professorService.createProfessor(new ProfessorDTO("Vitor", "manel123",5,"Computação"));
     }
 
     @AfterEach
@@ -61,7 +71,6 @@ public class ProfessorTests {
 
     public static Stream<Arguments> professorCases() {
         return Stream.of(
-                Arguments.of(new ProfessorDTO("Mathias","12345678",5,"Computação")),
                 Arguments.of(new ProfessorDTO("Ramon","nobrega123",10,"ADS")),
                 Arguments.of(new ProfessorDTO("Ennyo José", "123ennyo",5,"Engenharia de Software")),
                 Arguments.of(new ProfessorDTO("Gabriel","boy12345",4,"Informática"))
@@ -70,6 +79,7 @@ public class ProfessorTests {
 
     @Authenticate
     ResultActions login() throws Exception {
+
         return mockMvc.perform(new Request(requestUtils)
                     .operation(Operation.POST)
                     .endpoint("/login")
@@ -77,36 +87,77 @@ public class ProfessorTests {
     }
 
     @Test
-    @DisplayName("test get teacher by id")
+    @DisplayName("test get all teachers")
     @AuthenticatedTest
-    public void enpointWhenGettingTeacherById() throws Exception {
-
-        Professor professor = professorService.createProfessor(new ProfessorDTO("Gabriel","boy12345",4,"Informática"));
+    public void endpointWhenGettingAllTeachers() throws Exception {
 
         mockMvc.perform(new Request(requestUtils)
                 .operation(Operation.GET)
-                .endpoint("/professor/{id}")
-                .params(professor.getId()).execute())
-            .andExpect(status().is4xxClientError())
+                .endpoint("/professor/").execute())
+            .andExpect(status().is2xxSuccessful())
+            .andExpect(jsonPath("$.*", hasSize(4)));
+    }
+
+    @ParameterizedTest
+    @DisplayName("test get teacher by id")
+    @MethodSource("professorCases")
+    @AuthenticatedTest
+    public void enpointWhenGettingTeacherById(ProfessorDTO professorDTO) throws Exception {
+
+        Professor professor = professorService.createProfessor(professorDTO);
+
+        mockMvc.perform(new Request(requestUtils)
+                .operation(Operation.GET)
+
+                .endpoint("/professor/{id}").pathParams(professor.getId())
+                .execute())
+            .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
             .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
     }
 
-    //@Test
+    @ParameterizedTest
     @DisplayName("test delete teacher by id")
+    @MethodSource("professorCases")
     @AuthenticatedTest
-    public void endpointWhenDeletingTeacherById() throws Exception {
+    public void endpointWhenDeletingTeacherById(ProfessorDTO professorDTO) throws Exception {
 
-        Professor professor = professorService.createProfessor(new ProfessorDTO("Gabriel","boy12345",4,"Informática"));
+        Professor professor = professorService.createProfessor(professorDTO);
+
+        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("id", professor.getId().toString());
 
         mockMvc.perform(new Request(requestUtils)
                 .operation(Operation.DELETE)
-                .endpoint("/professor/{id}")
-                .params(professor.getId()).execute())
+                .endpoint("/professor/")
+                .params(requestParams).execute())
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
             .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
+    }
+
+    @ParameterizedTest
+    @DisplayName("test put teacher by id")
+    @MethodSource("professorCases")
+    @AuthenticatedTest
+    public void endpointWhenUpdatingTeacherById(ProfessorDTO professorDTO) throws Exception {
+
+        Professor professor = professorService.createProfessor(professorDTO);
+        ProfessorDTO professorDTO1 = new ProfessorDTO("Gab","12345678",4,"ADS");
+
+        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("id", professor.getId().toString());
+
+        mockMvc.perform(new Request(requestUtils)
+                .operation(Operation.PUT)
+                .endpoint("/professor/")
+                .params(requestParams)
+                .body(professorDTO1).execute())
+            .andExpect(status().is2xxSuccessful())
+            .andExpect(jsonPath("$.name", is(professorDTO1.getName())))
+            .andExpect(jsonPath("$.serviceTime", is(professorDTO1.getServiceTime())))
+            .andExpect(jsonPath("$.discipline", is(professorDTO1.getDiscipline())));
     }
 }

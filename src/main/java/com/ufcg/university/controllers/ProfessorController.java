@@ -102,6 +102,7 @@ public class ProfessorController {
 	)
 	public ResponseEntity<?> deleteProfessorById(@RequestParam("id") Long id) {
 		try {
+			System.out.println(id);
 			return new ResponseEntity<>(this.professorService.deleteProfessor(id), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Professor Not Found", HttpStatus.NOT_FOUND);
