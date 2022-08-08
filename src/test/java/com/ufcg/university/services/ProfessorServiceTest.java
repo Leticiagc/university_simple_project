@@ -3,6 +3,8 @@ package com.ufcg.university.services;
 import com.ufcg.university.dto.ProfessorDTO;
 import com.ufcg.university.entities.Professor;
 import com.ufcg.university.mapper.ProfessorMapper;
+import com.ufcg.university.repositories.ProfessorRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class ProfessorServiceTest {
     private ProfessorService profService;
 
     @Autowired
+    private ProfessorRepository profRepository;
+
+    @Autowired
     private ProfessorMapper professorMapper;
 
     @Autowired
@@ -29,45 +34,46 @@ public class ProfessorServiceTest {
         profService.createProfessor(new ProfessorDTO("Ennyo","1234",1,"ProgramaÃ§ao"));
         profService.createProfessor(new ProfessorDTO("Ramon","78910",4,"Banco de Dados"));
     }
+
+    @AfterEach
+    public void afterTests() {
+        profRepository.deleteAll();
+    }
+
     @Test
     public void createdProfessorTest(){
         prof = new ProfessorDTO("Maria","12345",3,"EDA");
+
         Professor prof2 = new Professor("Maria","12345",3,"EDA");
         Professor prof3 = profService.createProfessor(prof);
+
         assertTrue(bCryptPasswordEncoder.matches(prof2.getPassword(), prof3.getPassword()));
     }
 
     @Test
-    public void getProfessorTest(){
+    public void getProfessorTest() throws Exception {
         prof = new ProfessorDTO("Maria","12345",3,"EDA");
         Professor prof2 = profService.createProfessor(prof);
-        try {
-            ProfessorDTO prof3 = profService.getProfessorById(prof2.getId());
-            Professor prof4 = professorMapper.convertFromProfessorDTO(prof3);
-            assertEquals(prof2,prof4);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        ProfessorDTO prof3 = profService.getProfessorById(prof2.getId());
+        Professor prof4 = professorMapper.convertFromProfessorDTO(prof3);
+        assertEquals(prof2,prof4);
     }
 
     @Test
     public void listProfessors(){
-        System.out.println("************************************************************");
-        profService.listProfessors();
-        System.out.println("************************************************************");
+        assertEquals(profService.listProfessors().size(), 2);
     }
 
     @Test
-    public void updateProfessor(){
+    public void updateProfessor() throws Exception {
         prof = new ProfessorDTO("Maria","12345",3,"EDA");
         Professor prof2 = profService.createProfessor(prof);
+
         ProfessorDTO prof3 = new ProfessorDTO("Maria", "223344", 3, "EDA");
-        try {
-            ProfessorDTO profUpdated = profService.updateProfessor(prof2.getId(), prof3);
-            assertTrue(bCryptPasswordEncoder.matches(prof3.getPassword(), profUpdated.getPassword()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ProfessorDTO profUpdated = profService.updateProfessor(prof2.getId(), prof3);
+
+        assertEquals(prof3.getPassword(), profUpdated.getPassword());
     }
 
 }
