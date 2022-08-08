@@ -50,6 +50,7 @@ dependencies {
 	implementation 'org.springframework:spring-core:5.3.20'
 	implementation 'net.minidev:json-smart:2.4.8'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
+
 }
 
 test {
