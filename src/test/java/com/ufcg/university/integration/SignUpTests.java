@@ -38,9 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SignUpTests {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
     private ProfessorService professorService;
 
     @Autowired

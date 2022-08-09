@@ -3,15 +3,20 @@ package com.ufcg.university.services;
 import com.ufcg.university.dto.StudentDTO;
 import com.ufcg.university.entities.Student;
 import com.ufcg.university.mapper.StudentMapper;
+import org.api.mocktests.utils.MockTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@EnableAutoConfiguration
+@AutoConfigureMockMvc
 public class StudentServiceTest {
 
     @Autowired

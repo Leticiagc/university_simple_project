@@ -41,9 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class StudentTests {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
     private StudentService studentService;
 
     @Autowired
