@@ -137,21 +137,17 @@ class ProfessorServiceTest {
     }
 
     @Test
-    @DisplayName("Teste para criação de um professor com senha string nula")
+    @DisplayName("Teste para criacao de um professor com senha string nula")
     public void createdProfessorPasswordNull(){
-        try {
-            prof = new ProfessorDTO("Maria",null,0,"Programaçao");
-            Professor prof2 = profService.createProfessor(prof);
-            ProfessorDTO prof3 = profService.getProfessorById(prof2.getId());
-            Professor prof4 = professorMapper.convertFromProfessorDTO(prof3);
-            assertEquals(prof2,prof4);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        prof = new ProfessorDTO("Maria",null,0,"Programaçao");
+        Exception thrown = assertThrows(Exception.class, () -> {
+            profService.createProfessor(prof);
+        });
+        assertTrue(thrown.getMessage().contains("rawPassword"));
     }
 
     @Test
-    @DisplayName("Teste para criação de um professor com string da senha composta por caracteres inválidos")
+    @DisplayName("Teste para criacao de um professor com string da senha composta por caracteres inválidos")
     public void createdProfessorPasswordCaractereInvalid(){
         try {
             prof = new ProfessorDTO("Maria","$=",0,"Programaçao");
@@ -165,7 +161,7 @@ class ProfessorServiceTest {
     }
 
     @Test
-    @DisplayName("Teste para criação de um professor com string do tempo de serviço composta por entrada nula")
+    @DisplayName("Teste para criacao de um professor com string do tempo de serviço composta por entrada nula")
     public void createdProfessorServiceTimeNull(){
         try {
             prof = new ProfessorDTO("Maria","1234",null,"Programaçao");
@@ -179,7 +175,7 @@ class ProfessorServiceTest {
     }
 
     @Test
-    @DisplayName("Teste para criação de um professor com string do tempo de serviço composta por entrada inválida")
+    @DisplayName("Teste para criacao de um professor com string do tempo de serviço composta por entrada inválida")
     public void createdProfessorServiceTimeInvalid(){
         try {
             prof = new ProfessorDTO("Maria","1234",-1,"Programaçao");
@@ -193,7 +189,7 @@ class ProfessorServiceTest {
     }
 
     @Test
-    @DisplayName("Teste para criação de um professor com disciplina string vazia")
+    @DisplayName("Teste para criacao de um professor com disciplina string vazia")
     public void createdProfessorDisciplineEmpty(){
         try {
             prof = new ProfessorDTO("Maria","1234",0,"");
@@ -207,7 +203,7 @@ class ProfessorServiceTest {
     }
 
     @Test
-    @DisplayName("Teste para criação de um professor com disciplina string nula")
+    @DisplayName("Teste para criacao de um professor com disciplina string nula")
     public void createdProfessorDisciplineNull(){
         try {
             prof = new ProfessorDTO("Maria","1234",0,null);
@@ -221,7 +217,7 @@ class ProfessorServiceTest {
     }
 
     @Test
-    @DisplayName("Teste para criação de um professor com string da disciplina composta por caracteres inválidos")
+    @DisplayName("Teste para criacao de um professor com string da disciplina composta por caracteres inválidos")
     public void createdProfessorDisciplineCaractereInvalid(){
         try {
             prof = new ProfessorDTO("Maria","1234",0,"Progamaçao$=");
@@ -250,9 +246,11 @@ class ProfessorServiceTest {
     @DisplayName("Teste para listar todos os professores")
     public void listProfessors(){
         prof = new ProfessorDTO("Maria","12345",3,"EDA");
-        Professor professor = profService.createProfessor(prof);
+        profService.createProfessor(prof);
+
         ProfessorDTO prof2 = new ProfessorDTO("Ana","9302830",6,"Probabilidade");
-        Professor professor2 = profService.createProfessor(prof2);
+        profService.createProfessor(prof2);
+
         assertNotNull(profService.listProfessors());
     }
 
@@ -262,7 +260,7 @@ class ProfessorServiceTest {
         ProfessorDTO prof3 = new ProfessorDTO("Ramon", "223344", 4, "EDA");
         try {
             ProfessorDTO profUpdated = profService.updateProfessor(exemplo2.getId(), prof3);
-            assertTrue(bCryptPasswordEncoder.matches(prof3.getPassword(), profUpdated.getPassword()));
+            assertEquals(prof3.getPassword(), profUpdated.getPassword());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

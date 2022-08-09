@@ -66,9 +66,10 @@ public class StudentServiceTest {
     @DisplayName("teste para listar todos os estudantes")
     public void listStudents() {
         studentDTO = new StudentDTO("João","1234567","117210455");
-        Student student = studentService.createStudent(studentDTO);
+        studentService.createStudent(studentDTO);
+
         StudentDTO studentDTO2 = new StudentDTO("Pedro","121214","117210258");
-        Student student2 = studentService.createStudent(studentDTO2);
+        studentService.createStudent(studentDTO2);
 
         assertEquals(studentService.listStudents().size(), 2);
     }
@@ -83,7 +84,7 @@ public class StudentServiceTest {
         studentService.deleteStudent(student.getId());
 
         Exception thrown = assertThrows(Exception.class, () -> {
-            StudentDTO studentDTO2 = studentService.getStudentById(student.getId());
+            studentService.getStudentById(student.getId());
         });
 
         assertTrue(thrown.getMessage().contains("Student Not Found"));
