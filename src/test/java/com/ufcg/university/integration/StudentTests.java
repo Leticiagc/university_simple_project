@@ -1,6 +1,5 @@
 package com.ufcg.university.integration;
 
-import com.ufcg.university.dto.ProfessorDTO;
 import com.ufcg.university.dto.StudentDTO;
 import com.ufcg.university.entities.Student;
 import com.ufcg.university.entities.User;
@@ -11,7 +10,7 @@ import org.api.mocktests.annotations.AuthenticatedTest;
 import org.api.mocktests.annotations.AutoConfigureRequest;
 import org.api.mocktests.models.Operation;
 import org.api.mocktests.models.Request;
-import org.api.mocktests.utils.RequestUtils;
+import org.api.mocktests.utils.MockTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,7 +49,8 @@ public class StudentTests {
     @Autowired
     private StudentRepository studentRepository;
 
-    private final RequestUtils requestUtils = new RequestUtils(this);
+    @Autowired
+    private MockTest mockTest;
 
     @BeforeEach
     public void beforeTests() {
@@ -75,21 +75,19 @@ public class StudentTests {
     }
 
     @Authenticate
-    ResultActions login() throws Exception {
-        return mockMvc.perform(new Request(requestUtils)
-                    .operation(Operation.POST)
-                    .endpoint("/login")
-                    .body(new User("Mathias","12345678")).execute());
-    }
+    private Request requestLogin = new Request()
+            .operation(Operation.POST)
+            .endpoint("/login")
+            .body(new User("Mathias","12345678"));
 
     @Test
     @DisplayName("test get all students")
     @AuthenticatedTest
     public void endpointWhenGettingAllStudents() throws Exception {
 
-        mockMvc.perform(new Request(requestUtils)
+        mockTest.performRequest(new Request()
                 .operation(Operation.GET)
-                .endpoint("/student/").execute())
+                .endpoint("/student/"))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.*", hasSize(4)));
     }
@@ -102,10 +100,9 @@ public class StudentTests {
 
         Student student = studentService.createStudent(studentDTO);
 
-        mockMvc.perform(new Request(requestUtils)
+        mockTest.performRequest(new Request()
                 .operation(Operation.GET)
-                .endpoint("/student/{id}").pathParams(student.getId())
-                .execute())
+                .endpoint("/student/{id}").pathParams(student.getId()))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(student.getName())))
             .andExpect(jsonPath("$.registration", is(student.getRegistration())));
@@ -122,10 +119,10 @@ public class StudentTests {
         LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("id", student.getId().toString());
 
-        mockMvc.perform(new Request(requestUtils)
+        mockTest.performRequest(new Request()
                 .operation(Operation.DELETE)
                 .endpoint("/student/")
-                .params(requestParams).execute())
+                .params(requestParams))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(student.getName())))
             .andExpect(jsonPath("$.registration", is(student.getRegistration())));
@@ -143,11 +140,11 @@ public class StudentTests {
         LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("id", student.getId().toString());
 
-        mockMvc.perform(new Request(requestUtils)
+        mockTest.performRequest(new Request()
                 .operation(Operation.PUT)
                 .endpoint("/student/")
                 .params(requestParams)
-                .body(studentDTO1).execute())
+                .body(studentDTO1))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(studentDTO1.getName())))
             .andExpect(jsonPath("$.registration", is(studentDTO1.getRegistration())));

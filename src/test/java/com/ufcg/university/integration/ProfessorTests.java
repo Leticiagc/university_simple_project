@@ -1,19 +1,16 @@
 package com.ufcg.university.integration;
 
-import com.ufcg.university.controllers.ProfessorController;
 import com.ufcg.university.dto.ProfessorDTO;
-import com.ufcg.university.dto.StudentDTO;
 import com.ufcg.university.entities.Professor;
 import com.ufcg.university.entities.User;
 import com.ufcg.university.repositories.ProfessorRepository;
 import com.ufcg.university.services.ProfessorService;
-import com.ufcg.university.settings.AuthenticationFilter;
 import org.api.mocktests.annotations.Authenticate;
 import org.api.mocktests.annotations.AuthenticatedTest;
 import org.api.mocktests.annotations.AutoConfigureRequest;
 import org.api.mocktests.models.Operation;
 import org.api.mocktests.models.Request;
-import org.api.mocktests.utils.RequestUtils;
+import org.api.mocktests.utils.MockTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,11 +21,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.stream.Stream;
@@ -45,16 +40,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProfessorTests {
 
     @Autowired
-    private MockMvc mockMvc;
-
-
-    @Autowired
     private ProfessorService professorService;
 
     @Autowired
     private ProfessorRepository professorRepository;
 
-    private final RequestUtils requestUtils = new RequestUtils(this);
+    @Autowired
+    private MockTest mockTest;
 
     @BeforeEach
     public void beforeTests() {
@@ -78,22 +70,19 @@ public class ProfessorTests {
     }
 
     @Authenticate
-    ResultActions login() throws Exception {
-
-        return mockMvc.perform(new Request(requestUtils)
-                    .operation(Operation.POST)
-                    .endpoint("/login")
-                    .body(new User("Mathias","12345678")).execute());
-    }
+    private Request requestLogin = new Request()
+            .operation(Operation.POST)
+            .endpoint("/login")
+            .body(new User("Mathias", "12345678"));
 
     @Test
     @DisplayName("test get all teachers")
     @AuthenticatedTest
     public void endpointWhenGettingAllTeachers() throws Exception {
 
-        mockMvc.perform(new Request(requestUtils)
+        mockTest.performRequest(new Request()
                 .operation(Operation.GET)
-                .endpoint("/professor/").execute())
+                .endpoint("/professor/"))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.*", hasSize(4)));
     }
@@ -106,11 +95,10 @@ public class ProfessorTests {
 
         Professor professor = professorService.createProfessor(professorDTO);
 
-        mockMvc.perform(new Request(requestUtils)
+        mockTest.performRequest(new Request()
                 .operation(Operation.GET)
 
-                .endpoint("/professor/{id}").pathParams(professor.getId())
-                .execute())
+                .endpoint("/professor/{id}").pathParams(professor.getId()))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
@@ -128,10 +116,10 @@ public class ProfessorTests {
         LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("id", professor.getId().toString());
 
-        mockMvc.perform(new Request(requestUtils)
+        mockTest.performRequest(new Request()
                 .operation(Operation.DELETE)
                 .endpoint("/professor/")
-                .params(requestParams).execute())
+                .params(requestParams))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
@@ -150,11 +138,11 @@ public class ProfessorTests {
         LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("id", professor.getId().toString());
 
-        mockMvc.perform(new Request(requestUtils)
+        mockTest.performRequest(new Request()
                 .operation(Operation.PUT)
                 .endpoint("/professor/")
                 .params(requestParams)
-                .body(professorDTO1).execute())
+                .body(professorDTO1))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professorDTO1.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professorDTO1.getServiceTime())))
