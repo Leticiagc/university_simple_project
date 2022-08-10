@@ -2,6 +2,11 @@ package com.ufcg.university.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 @Schema(name = "Modelo ProfessorDTO", description = "Modelo de ProfessorDTO da aplicação.")
 public class ProfessorDTO {
 
@@ -11,6 +16,8 @@ public class ProfessorDTO {
 			example = "Pedro",
 			required = true
 	)
+	@NotBlank
+	@Pattern(regexp = "^\\p{Alpha}$", message ="Invalid Name")
 	private String name;
 
 	@Schema(
@@ -22,6 +29,10 @@ public class ProfessorDTO {
 			maxLength = 16,
 			format = "regex[0-9A-Za-z]"
 	)
+	@Min(8)
+	@Max(16)
+	@NotBlank
+	@Pattern(regexp = "^\\p{Alnum}$", message ="Invalid Password")
 	private String password;
 
 	@Schema(
@@ -31,6 +42,8 @@ public class ProfessorDTO {
 			maximum = "70",
 			exclusiveMinimum = true
 	)
+	@NotBlank
+	@Pattern(regexp = "^\\p{Digit}$", message ="Invalid Service Time")
 	private Integer serviceTime;
 
 	@Schema(
@@ -39,6 +52,8 @@ public class ProfessorDTO {
 			nullable = true,
 			allowableValues = "Cálculo 1, P1, LP1, EDA, Lógica"
 	)
+	@NotBlank
+	@Pattern(regexp = "^\\p{Alnum}$", message ="Invalid Discipline")
 	private String discipline;
 	
 	public ProfessorDTO() {}
