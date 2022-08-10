@@ -8,7 +8,7 @@ import com.ufcg.university.services.StudentService;
 import org.api.mocktests.annotations.Authenticate;
 import org.api.mocktests.annotations.AuthenticatedTest;
 import org.api.mocktests.annotations.AutoConfigureRequest;
-import org.api.mocktests.models.Operation;
+import org.api.mocktests.models.Method;
 import org.api.mocktests.models.Request;
 import org.api.mocktests.utils.MockTest;
 import org.junit.jupiter.api.AfterEach;
@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.stream.Stream;
@@ -35,13 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest
-@EnableAutoConfiguration
 @AutoConfigureMockMvc
+@EnableAutoConfiguration
 @AutoConfigureRequest
 public class StudentTests {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     private StudentService studentService;
@@ -76,8 +71,8 @@ public class StudentTests {
 
     @Authenticate
     private Request requestLogin = new Request()
-            .operation(Operation.POST)
-            .endpoint("/login")
+            .method(Method.POST)
+            .url("/login")
             .body(new User("Mathias","12345678"));
 
     @Test
@@ -86,8 +81,8 @@ public class StudentTests {
     public void endpointWhenGettingAllStudents() throws Exception {
 
         mockTest.performRequest(new Request()
-                .operation(Operation.GET)
-                .endpoint("/student/"))
+                .method(Method.GET)
+                .url("/student/"))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.*", hasSize(4)));
     }
@@ -101,8 +96,8 @@ public class StudentTests {
         Student student = studentService.createStudent(studentDTO);
 
         mockTest.performRequest(new Request()
-                .operation(Operation.GET)
-                .endpoint("/student/{id}").pathParams(student.getId()))
+                .method(Method.GET)
+                .url("/student/{id}").pathParams(student.getId()))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(student.getName())))
             .andExpect(jsonPath("$.registration", is(student.getRegistration())));
@@ -120,8 +115,8 @@ public class StudentTests {
         requestParams.add("id", student.getId().toString());
 
         mockTest.performRequest(new Request()
-                .operation(Operation.DELETE)
-                .endpoint("/student/")
+                .method(Method.DELETE)
+                .url("/student/")
                 .params(requestParams))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(student.getName())))
@@ -141,8 +136,8 @@ public class StudentTests {
         requestParams.add("id", student.getId().toString());
 
         mockTest.performRequest(new Request()
-                .operation(Operation.PUT)
-                .endpoint("/student/")
+                .method(Method.PUT)
+                .url("/student/")
                 .params(requestParams)
                 .body(studentDTO1))
             .andExpect(status().is2xxSuccessful())

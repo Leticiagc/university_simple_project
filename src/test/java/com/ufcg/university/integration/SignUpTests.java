@@ -8,12 +8,11 @@ import com.ufcg.university.repositories.StudentRepository;
 import com.ufcg.university.services.ProfessorService;
 import com.ufcg.university.services.StudentService;
 import org.api.mocktests.annotations.AutoConfigureRequest;
-import org.api.mocktests.models.Operation;
+import org.api.mocktests.models.Method;
 import org.api.mocktests.models.Request;
 import org.api.mocktests.utils.MockTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -36,9 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRequest
 public class SignUpTests {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     private ProfessorService professorService;
@@ -100,8 +94,8 @@ public class SignUpTests {
     @DisplayName("test signup teachers")
     public void endpointWhenSavingProfessor(ProfessorDTO professorDTO) throws Exception {
         mockTest.performRequest(new Request()
-                    .operation(Operation.POST)
-                    .endpoint("/signup/professor")
+                    .method(Method.POST)
+                    .url("/signup/professor")
                     .body(professorDTO))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is(professorDTO.getName())))
@@ -109,23 +103,13 @@ public class SignUpTests {
                 .andExpect(jsonPath("$.discipline", is(professorDTO.getDiscipline())));
     }
 
-    @Test
-    public void test() throws Exception {
-
-        System.out.println("teste");
-        for(StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
-            System.out.println(stackTraceElement.getMethodName());
-        }
-        System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
-    }
-
     @ParameterizedTest
     @MethodSource("studentsCases")
     @DisplayName("test signup students")
     public void endpointWhenSavingStudent(StudentDTO studentDTO) throws Exception {
         mockTest.performRequest(new Request()
-                    .operation(Operation.POST)
-                    .endpoint("/signup/student")
+                    .method(Method.POST)
+                    .url("/signup/student")
                     .body(studentDTO))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is(studentDTO.getName())))
@@ -140,8 +124,8 @@ public class SignUpTests {
         professorService.createProfessor(professorDTO);
 
         Objects.requireNonNull(mockTest.performRequest(new Request()
-                .operation(Operation.POST)
-                .endpoint("/login")
+                .method(Method.POST)
+                .url("/login")
                 .body(new User(professorDTO.getName(), professorDTO.getPassword())))
             .andExpect(status().is2xxSuccessful())
             .andReturn().getResponse().getHeader("Authorization"));
@@ -155,7 +139,7 @@ public class SignUpTests {
         studentService.createStudent(studentDTO);
 
         Objects.requireNonNull(mockTest.performRequest(new Request()
-                .operation(Operation.POST).endpoint("/login")
+                .method(Method.POST).url("/login")
                 .body(new User(studentDTO.getName(), studentDTO.getPassword())))
             .andExpect(status().is2xxSuccessful())
             .andReturn().getResponse().getHeader("Authorization"));
@@ -167,8 +151,8 @@ public class SignUpTests {
     public void endpointWhenLogginInvalidTeachers(User user) throws Exception {
 
         mockTest.performRequest(new Request()
-                .operation(Operation.POST)
-                .endpoint("/login")
+                .method(Method.POST)
+                .url("/login")
                 .body(user))
             .andExpect(status().isUnauthorized());
     }
@@ -179,8 +163,8 @@ public class SignUpTests {
     public void endpointWhenLoggingInvalidStudents(User user) throws Exception {
 
         mockTest.performRequest(new Request()
-                .operation(Operation.POST)
-                .endpoint("/login")
+                .method(Method.POST)
+                .url("/login")
                 .body(user))
             .andExpect(status().isUnauthorized());
     }

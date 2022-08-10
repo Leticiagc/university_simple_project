@@ -8,7 +8,7 @@ import com.ufcg.university.services.ProfessorService;
 import org.api.mocktests.annotations.Authenticate;
 import org.api.mocktests.annotations.AuthenticatedTest;
 import org.api.mocktests.annotations.AutoConfigureRequest;
-import org.api.mocktests.models.Operation;
+import org.api.mocktests.models.Method;
 import org.api.mocktests.models.Request;
 import org.api.mocktests.utils.MockTest;
 import org.junit.jupiter.api.AfterEach;
@@ -23,7 +23,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.stream.Stream;
@@ -36,8 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @EnableAutoConfiguration
 @AutoConfigureMockMvc
-@AutoConfigureRequest(mediatype = "application/json", header = {"Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNYXRoaWFzIiwiaWF0IjoxNjU5NDUwMTUyLCJleHAiOjE2NjAzMTQxNTJ9.0Lp3YpCVuf00t15vEmxxtE9-lFRPJrLLg2wnKNlUH2c"})
+@AutoConfigureRequest(mediatype = "application/json", header = {"Authorization","Bearer eyJhbGciOiJIUzI1NiJ9..."})
 public class ProfessorTests {
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Autowired
     private ProfessorService professorService;
@@ -71,8 +73,8 @@ public class ProfessorTests {
 
     @Authenticate
     private Request requestLogin = new Request()
-            .operation(Operation.POST)
-            .endpoint("/login")
+            .method(Method.POST)
+            .url("/login")
             .body(new User("Mathias", "12345678"));
 
     @Test
@@ -80,9 +82,7 @@ public class ProfessorTests {
     @AuthenticatedTest
     public void endpointWhenGettingAllTeachers() throws Exception {
 
-        mockTest.performRequest(new Request()
-                .operation(Operation.GET)
-                .endpoint("/professor/"))
+        mockTest.performRequest(new Request().method(Method.GET).url("/professor/"))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.*", hasSize(4)));
     }
@@ -95,10 +95,8 @@ public class ProfessorTests {
 
         Professor professor = professorService.createProfessor(professorDTO);
 
-        mockTest.performRequest(new Request()
-                .operation(Operation.GET)
+        mockTest.performRequest(new Request().method(Method.GET).url("/professor/{id}").pathParams(professor.getId()))
 
-                .endpoint("/professor/{id}").pathParams(professor.getId()))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
@@ -116,10 +114,7 @@ public class ProfessorTests {
         LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("id", professor.getId().toString());
 
-        mockTest.performRequest(new Request()
-                .operation(Operation.DELETE)
-                .endpoint("/professor/")
-                .params(requestParams))
+        mockTest.performRequest(new Request().method(Method.DELETE).url("/professor/").params(requestParams))
             .andExpect(status().is2xxSuccessful())
             .andExpect(jsonPath("$.name", is(professor.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
@@ -139,8 +134,8 @@ public class ProfessorTests {
         requestParams.add("id", professor.getId().toString());
 
         mockTest.performRequest(new Request()
-                .operation(Operation.PUT)
-                .endpoint("/professor/")
+                .method(Method.PUT)
+                .url("/professor/")
                 .params(requestParams)
                 .body(professorDTO1))
             .andExpect(status().is2xxSuccessful())
