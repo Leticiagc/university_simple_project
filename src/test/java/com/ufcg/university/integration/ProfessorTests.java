@@ -50,6 +50,8 @@ public class ProfessorTests {
     @Autowired
     private MockTest mockTest;
 
+    private static final long INVALID_INPUT = 12458963L;
+
     @BeforeEach
     public void beforeTests() {
         professorService.createProfessor(new ProfessorDTO("Mathias","12345678",5,"Computação"));
@@ -102,6 +104,17 @@ public class ProfessorTests {
             .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
             .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
     }
+
+    @ParameterizedTest
+    @DisplayName("test get nonexistent teacher by id")
+    @MethodSource("professorCases")
+    @AuthenticatedTest
+    public void enpointWhenGettingNonexistentTeacherById() throws Exception {
+        mockTest.performRequest(new Request().method(Method.GET).url("/professor/{id}").pathParams(INVALID_INPUT))
+                .andExpect(status().is4xxClientError());
+
+    }
+
 
     @ParameterizedTest
     @DisplayName("test delete teacher by id")
