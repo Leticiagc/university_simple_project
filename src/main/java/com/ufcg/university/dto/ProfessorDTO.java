@@ -2,10 +2,7 @@ package com.ufcg.university.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 @Schema(name = "Modelo ProfessorDTO", description = "Modelo de ProfessorDTO da aplicação.")
 public class ProfessorDTO {
@@ -16,8 +13,9 @@ public class ProfessorDTO {
 			example = "Pedro",
 			required = true
 	)
-	@NotBlank
-	@Pattern(regexp = "^\\p{Alpha}$", message ="Invalid Name")
+	@NotBlank(message ="Invalid Name")
+	@NotNull(message ="Invalid Name")
+	@Pattern(regexp = "^\\p{Alpha}+$", message ="Invalid Name")
 	private String name;
 
 	@Schema(
@@ -29,10 +27,10 @@ public class ProfessorDTO {
 			maxLength = 16,
 			format = "regex[0-9A-Za-z]"
 	)
-	@Min(8)
-	@Max(16)
-	@NotBlank
-	@Pattern(regexp = "^\\p{Alnum}$", message ="Invalid Password")
+	@Size(min = 8, max = 16)
+	@NotBlank(message ="Invalid Password")
+	@NotNull(message ="Invalid Password")
+	@Pattern(regexp = "^\\p{Alnum}+$", message ="Invalid Password")
 	private String password;
 
 	@Schema(
@@ -42,8 +40,9 @@ public class ProfessorDTO {
 			maximum = "70",
 			exclusiveMinimum = true
 	)
-	@NotBlank
-	@Pattern(regexp = "^\\p{Digit}$", message ="Invalid Service Time")
+	@Min(0)
+	@Max(70)
+	@NotNull(message ="Invalid Service Time")
 	private Integer serviceTime;
 
 	@Schema(
@@ -52,8 +51,9 @@ public class ProfessorDTO {
 			nullable = true,
 			allowableValues = "Cálculo 1, P1, LP1, EDA, Lógica"
 	)
-	@NotBlank
-	@Pattern(regexp = "^\\p{Alnum}$", message ="Invalid Discipline")
+	@NotBlank(message = "Invalid Discipline")
+	@NotNull(message = "Invalid Discipline")
+	@Pattern(regexp = "Cálculo 1|P1|LP1|EDA|Lógica", message = "Invalid Discipline")
 	private String discipline;
 	
 	public ProfessorDTO() {}
@@ -97,3 +97,4 @@ public class ProfessorDTO {
 		this.password = password;
 	}
 }
+

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "professor")
@@ -44,6 +45,7 @@ public class Professor extends RepresentationModel<Professor> {
 			description = "Senha de acesso.",
 			format = "[0-9A-Za-z]"
 	)
+
 	private String password;
 	
 	@Column(name = "serviceTime")
@@ -55,6 +57,7 @@ public class Professor extends RepresentationModel<Professor> {
 			exclusiveMinimum = true,
 			hidden = true
 	)
+
 	private Integer serviceTime;
 	
 	@Column(name = "discipline")
@@ -64,6 +67,7 @@ public class Professor extends RepresentationModel<Professor> {
 			nullable = true,
 			allowableValues = "Cálculo 1, P1, EDA, Lógica"
 	)
+
 	private String discipline;
 	
 	public Professor() {}

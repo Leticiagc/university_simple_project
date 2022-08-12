@@ -64,22 +64,23 @@ public class SignUpTests {
         );
     }
 
-//    public static Stream<Arguments> professorInvalidCases() {
-//        return Stream.of(
-//                Arguments.of(new ProfessorDTO("","12345678",5,"Computação")),
-//                Arguments.of(new ProfessorDTO("12345671819203020","12345678",5,"Computação")),
-//                Arguments.of(new ProfessorDTO("!@#$%¨&*","12345678",5,"Computação")),
-//                Arguments.of(new ProfessorDTO("Mathias","",5,"Computação")),
-//                Arguments.of(new ProfessorDTO("Mathias","1234567",5,"Computação")),
-//                Arguments.of(new ProfessorDTO("Mathias","123456789123456789",5,"Computação")),
-//                Arguments.of(new ProfessorDTO("Mathias","!@#$%¨&",5,"Computação")),
-//                Arguments.of(new ProfessorDTO("Mathias","12345678",-1,"Computação")),
-//                Arguments.of(new ProfessorDTO("Mathias","12345678",66,"Computação")),
-//                Arguments.of(new ProfessorDTO("Mathias","12345678",5,"")),
-//                Arguments.of(new ProfessorDTO("Mathias","12345678",5,"Banco de Dados")),
-//                Arguments.of(new ProfessorDTO("Gabriel","boy12345",4,"Informática"))
-//        );
-//    }
+    public static Stream<Arguments> professorInvalidCases() {
+        return Stream.of(
+                Arguments.of(new ProfessorDTO("","12345678",5,"Computação")),
+                Arguments.of(new ProfessorDTO("12345671819203020","12345678",5,"Computação")),
+                Arguments.of(new ProfessorDTO("!@#$%¨&*","12345678",5,"Computação")),
+                Arguments.of(new ProfessorDTO("Mathias","",5,"Computação")),
+                Arguments.of(new ProfessorDTO("Mathias","1234567",5,"Computação")),
+                Arguments.of(new ProfessorDTO("Mathias","123456789123456789",5,"Computação")),
+                Arguments.of(new ProfessorDTO("Mathias","!@#$%¨&",5,"Computação")),
+                Arguments.of(new ProfessorDTO("Mathias","12345678",-1,"Computação")),
+                Arguments.of(new ProfessorDTO("Mathias","12345678",66,"Computação")),
+                Arguments.of(new ProfessorDTO("Mathias","12345678",5,"")),
+                Arguments.of(new ProfessorDTO("Mathias","12345678",5,"Banco de Dados")),
+                Arguments.of(new ProfessorDTO("Gabriel","boy12345",4,"Informática")),
+                Arguments.of(new ProfessorDTO("","",-1,"Informática"))
+        );
+    }
 
     public static Stream<Arguments> studentsCases() {
         return Stream.of(
@@ -162,16 +163,16 @@ public class SignUpTests {
             .andReturn().getResponse().getHeader("Authorization"));
     }
 
-//    @ParameterizedTest
-//    @MethodSource("professorInvalidCases")
-//    @DisplayName("test invalid signup teachers")
-//    public void endpointWhenSavingInvalidProfessor(ProfessorDTO professorDTO) throws Exception {
-//        mockTest.performRequest(new Request()
-//                        .method(Method.POST)
-//                        .url("/signup/professor")
-//                        .body(professorDTO))
-//                .andExpect(status().is4xxClientError());
-//    }
+    @ParameterizedTest
+    @MethodSource("professorInvalidCases")
+    @DisplayName("test invalid signup teachers")
+    public void endpointWhenSavingInvalidProfessor(ProfessorDTO professorDTO) throws Exception {
+        mockTest.performRequest(new Request()
+                        .method(Method.POST)
+                        .url("/signup/professor")
+                        .body(professorDTO))
+                .andExpect(status().is4xxClientError());
+    }
 
     @ParameterizedTest
     @MethodSource("teachersNullablesCases")
