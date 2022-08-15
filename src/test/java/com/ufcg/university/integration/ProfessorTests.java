@@ -93,7 +93,7 @@ public class ProfessorTests {
     @DisplayName("test get teacher by id")
     @MethodSource("professorCases")
     @AuthenticatedTest
-    public void enpointWhenGettingTeacherById(ProfessorDTO professorDTO) throws Exception {
+    public void endpointWhenGettingTeacherById(ProfessorDTO professorDTO) throws Exception {
 
         Professor professor = professorService.createProfessor(professorDTO);
 
@@ -109,12 +109,20 @@ public class ProfessorTests {
     @DisplayName("test get nonexistent teacher by id")
     @MethodSource("professorCases")
     @AuthenticatedTest
-    public void enpointWhenGettingNonexistentTeacherById() throws Exception {
+    public void endpointWhenGettingNonexistentTeacherById() throws Exception {
         mockTest.performRequest(new Request().method(Method.GET).url("/professor/{id}").pathParams(INVALID_INPUT))
                 .andExpect(status().is4xxClientError());
 
     }
 
+    @ParameterizedTest
+    @DisplayName("test delete nonexistent teacher by id")
+    @MethodSource("professorCases")
+    @AuthenticatedTest
+    public void endpointWhenDeletingNonexistentTeacherById() throws Exception {
+        mockTest.performRequest(new Request().method(Method.DELETE).url("/professor/").pathParams(INVALID_INPUT))
+                .andExpect(status().is4xxClientError());
+    }
 
     @ParameterizedTest
     @DisplayName("test delete teacher by id")
@@ -155,5 +163,25 @@ public class ProfessorTests {
             .andExpect(jsonPath("$.name", is(professorDTO1.getName())))
             .andExpect(jsonPath("$.serviceTime", is(professorDTO1.getServiceTime())))
             .andExpect(jsonPath("$.discipline", is(professorDTO1.getDiscipline())));
+    }
+
+    @ParameterizedTest
+    @DisplayName("test put invalid teacher by id")
+    @MethodSource("professorCases")
+    @AuthenticatedTest
+    public void endpointWhenUpdatingInvalidTeacherById(ProfessorDTO professorDTO) throws Exception {
+
+        Professor professor = professorService.createProfessor(professorDTO);
+        ProfessorDTO professorDTO1 = new ProfessorDTO("","12345678",4,"ADS");
+
+        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("id", professor.getId().toString());
+
+        mockTest.performRequest(new Request()
+                        .method(Method.PUT)
+                        .url("/professor/")
+                        .params(requestParams)
+                        .body(professorDTO1))
+                .andExpect(status().is4xxClientError());
     }
 }
