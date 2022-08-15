@@ -25,6 +25,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/professor")
 @SecurityRequirement(name = "Authorization")
@@ -109,6 +111,7 @@ public class ProfessorController {
 		}
 	}
 	
+	@Valid
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
 	@Operation(
 			summary = "Update Professor By Id",
