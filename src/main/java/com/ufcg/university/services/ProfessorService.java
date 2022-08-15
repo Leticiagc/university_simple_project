@@ -13,6 +13,8 @@ import com.ufcg.university.entities.Professor;
 import com.ufcg.university.mapper.ProfessorMapper;
 import com.ufcg.university.repositories.ProfessorRepository;
 
+import javax.validation.Valid;
+
 @Service
 public class ProfessorService {
 	

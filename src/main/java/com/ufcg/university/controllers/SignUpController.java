@@ -27,6 +27,8 @@ import com.ufcg.university.services.StudentService;
 import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/signup")
 @DependsOn({"openApiResource"})
@@ -40,6 +42,8 @@ public class SignUpController {
 
 	@RequestMapping(value = "/professor", method = RequestMethod.POST)
 	@Operation( responses = {
+			@ApiResponse(responseCode = "200", description = "It's Ok"),
+			@ApiResponse(responseCode = "404", description = "Invalid Professor"),
 		@ApiResponse(
 		description = "Create a Professor",
 		links = {
@@ -69,7 +73,7 @@ public class SignUpController {
 			)
 		}
 	)})
-	public ResponseEntity<Professor> createProfessor(@RequestBody ProfessorDTO professorDTO) {
+	public ResponseEntity<Professor> createProfessor(@Valid @RequestBody ProfessorDTO professorDTO) {
 		Professor professor = this.professorService.createProfessor(professorDTO);
 		List<Link> links;
 		links = AnnotationToHateoasUtil.getLinksFromMethodClass(SignUpController.class, "createProfessor");
