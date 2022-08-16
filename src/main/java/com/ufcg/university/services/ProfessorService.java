@@ -44,12 +44,16 @@ public class ProfessorService {
 		}
 	}
 	
-	public Professor createProfessor(ProfessorDTO professorDTO) {
+	public Professor createProfessor(ProfessorDTO professorDTO) throws Exception {
 		Professor professor = this.professorMapper.convertFromProfessorDTO(professorDTO);
-		professor.setPassword(bCryptPasswordEncoder.encode(professor.getPassword()));
-		this.professorRepository.save(professor);
-		professor.setPassword(professor.getPassword());
-		return professor;
+		if(getProfessorById(professor.getId()).equals(professorDTO)) {
+			throw new Exception("Professor Existing");
+		}else{
+			professor.setPassword(bCryptPasswordEncoder.encode(professor.getPassword()));
+			this.professorRepository.save(professor);
+			professor.setPassword(professor.getPassword());
+			return professor;
+		}
 	}
 	
 	public ProfessorDTO updateProfessor(Long id, ProfessorDTO professorDTO) throws Exception {

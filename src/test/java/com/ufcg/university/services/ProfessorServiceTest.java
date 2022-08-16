@@ -38,7 +38,7 @@ class ProfessorServiceTest {
     private Professor exemplo;
     private Professor exemplo2;
     @BeforeEach
-    public void beforeTests(){
+    public void beforeTests() throws Exception {
         exemplo = profService.createProfessor(new ProfessorDTO("Ennyo","1234",1,"Programaçao"));
         exemplo2 = profService.createProfessor(new ProfessorDTO("Ramon","78910",4,"Banco de Dados"));
     }
@@ -50,7 +50,7 @@ class ProfessorServiceTest {
 
     @Test
     @DisplayName("Teste para criar um professor")
-    public void createdProfessorTest(){
+    public void createdProfessorTest() throws Exception {
         prof = new ProfessorDTO("Maria","12345",3,"EDA");
         Professor prof2 = new Professor("Maria","12345",3,"EDA");
         Professor prof3 = profService.createProfessor(prof);
@@ -249,7 +249,7 @@ class ProfessorServiceTest {
 
     @Test
     @DisplayName("Teste para listar todos os professores")
-    public void listProfessors(){
+    public void listProfessors() throws Exception {
         prof = new ProfessorDTO("Maria","12345",3,"EDA");
         profService.createProfessor(prof);
 

@@ -73,7 +73,7 @@ public class SignUpController {
 			)
 		}
 	)})
-	public ResponseEntity<Professor> createProfessor(@Valid @RequestBody ProfessorDTO professorDTO) {
+	public ResponseEntity<Professor> createProfessor(@Valid @RequestBody ProfessorDTO professorDTO) throws Exception{
 		Professor professor = this.professorService.createProfessor(professorDTO);
 		List<Link> links;
 		links = AnnotationToHateoasUtil.getLinksFromMethodClass(SignUpController.class, "createProfessor");

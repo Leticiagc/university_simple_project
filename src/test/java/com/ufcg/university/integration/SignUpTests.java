@@ -64,6 +64,14 @@ public class SignUpTests {
         );
     }
 
+    public static Stream<Arguments> professorCaseExisting() {
+        return Stream.of(
+                Arguments.of(new ProfessorDTO("Mathias","12345678",5,"Computação")),
+                Arguments.of(new ProfessorDTO("Mathias","12345678",5,"Computação"))
+
+        );
+    }
+
     public static Stream<Arguments> professorInvalidCases() {
         return Stream.of(
                 Arguments.of(new ProfessorDTO("","12345678",5,"Computação")),
@@ -119,6 +127,17 @@ public class SignUpTests {
                 .andExpect(jsonPath("$.name", is(professorDTO.getName())))
                 .andExpect(jsonPath("$.serviceTime", is(professorDTO.getServiceTime())))
                 .andExpect(jsonPath("$.discipline", is(professorDTO.getDiscipline())));
+    }
+
+    @ParameterizedTest
+    @MethodSource("professorCaseExisting")
+    @DisplayName("test signup teachers existing")
+    public void endpointWhenSavingProfessorExisting(ProfessorDTO professorDTO) throws Exception {
+        mockTest.performRequest(new Request()
+                        .method(Method.POST)
+                        .url("/signup/professor")
+                        .body(professorDTO))
+                .andExpect(status().is4xxClientError());
     }
 
     @ParameterizedTest
