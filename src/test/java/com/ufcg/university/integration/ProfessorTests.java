@@ -73,6 +73,17 @@ public class ProfessorTests {
         );
     }
 
+    public static Stream<Arguments> invalidProfessorCases() {
+        return Stream.of(
+                Arguments.of(new ProfessorDTO("","nobrega123",10,"ADS")),
+                Arguments.of(new ProfessorDTO("Ennyo José", "",5,"Engenharia de Software")),
+                Arguments.of(new ProfessorDTO("João","12345oi",4,"")),
+                Arguments.of(new ProfessorDTO(null,"boy12345",4,"Informática")),
+                Arguments.of(new ProfessorDTO("Daniel","12345senha",null,"Engenharia de Software")),
+                Arguments.of(new ProfessorDTO("Jonatas","12345",4,null))
+        );
+    }
+
     @Authenticate
     private Request requestLogin = new Request()
             .method(Method.POST)
@@ -167,21 +178,17 @@ public class ProfessorTests {
 
     @ParameterizedTest
     @DisplayName("test put invalid teacher by id")
-    @MethodSource("professorCases")
+    @MethodSource("invalidProfessorCases")
     @AuthenticatedTest
     public void endpointWhenUpdatingInvalidTeacherById(ProfessorDTO professorDTO) throws Exception {
 
         Professor professor = professorService.createProfessor(professorDTO);
-        ProfessorDTO professorDTO1 = new ProfessorDTO("","12345678",4,"ADS");
-
-        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-        requestParams.add("id", professor.getId().toString());
 
         mockTest.performRequest(new Request()
                         .method(Method.PUT)
                         .url("/professor/")
-                        .params(requestParams)
-                        .body(professorDTO1))
+                        .pathParams(professor.getId())
+                        .body(professorDTO))
                 .andExpect(status().is4xxClientError());
     }
 }

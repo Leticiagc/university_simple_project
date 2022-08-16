@@ -33,8 +33,7 @@ public class Professor extends RepresentationModel<Professor> {
 			example = "Francisco",
 			required = true
 	)
-	@NotBlank
-	@NotNull
+
 	private String name;
 	
 	@Column(name = "password")
@@ -48,8 +47,6 @@ public class Professor extends RepresentationModel<Professor> {
 			format = "[0-9A-Za-z]"
 	)
 
-	@NotBlank
-	@NotNull
 	private String password;
 	
 	@Column(name = "serviceTime")
