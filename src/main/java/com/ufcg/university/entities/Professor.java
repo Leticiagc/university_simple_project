@@ -34,6 +34,7 @@ public class Professor extends RepresentationModel<Professor> {
 			required = true
 	)
 
+
 	private String name;
 	
 	@Column(name = "password")

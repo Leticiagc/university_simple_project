@@ -96,8 +96,8 @@ public class ProfessorTests {
     public void endpointWhenGettingAllTeachers() throws Exception {
 
         mockTest.performRequest(new Request().method(Method.GET).url("/professor/"))
-            .andExpect(status().is2xxSuccessful())
-            .andExpect(jsonPath("$.*", hasSize(4)));
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.*", hasSize(4)));
     }
 
     @ParameterizedTest
@@ -110,10 +110,10 @@ public class ProfessorTests {
 
         mockTest.performRequest(new Request().method(Method.GET).url("/professor/{id}").pathParams(professor.getId()))
 
-            .andExpect(status().is2xxSuccessful())
-            .andExpect(jsonPath("$.name", is(professor.getName())))
-            .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
-            .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.name", is(professor.getName())))
+                .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
+                .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
     }
 
     @ParameterizedTest
@@ -122,7 +122,7 @@ public class ProfessorTests {
     @AuthenticatedTest
     public void endpointWhenGettingNonexistentTeacherById() throws Exception {
         mockTest.performRequest(new Request().method(Method.GET).url("/professor/{id}").pathParams(INVALID_INPUT))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isNotFound());
 
     }
 
@@ -132,7 +132,7 @@ public class ProfessorTests {
     @AuthenticatedTest
     public void endpointWhenDeletingNonexistentTeacherById() throws Exception {
         mockTest.performRequest(new Request().method(Method.DELETE).url("/professor/").pathParams(INVALID_INPUT))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isBadRequest());
     }
 
     @ParameterizedTest
@@ -147,10 +147,10 @@ public class ProfessorTests {
         requestParams.add("id", professor.getId().toString());
 
         mockTest.performRequest(new Request().method(Method.DELETE).url("/professor/").params(requestParams))
-            .andExpect(status().is2xxSuccessful())
-            .andExpect(jsonPath("$.name", is(professor.getName())))
-            .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
-            .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.name", is(professor.getName())))
+                .andExpect(jsonPath("$.serviceTime", is(professor.getServiceTime())))
+                .andExpect(jsonPath("$.discipline", is(professor.getDiscipline())));
     }
 
     @ParameterizedTest
@@ -166,14 +166,14 @@ public class ProfessorTests {
         requestParams.add("id", professor.getId().toString());
 
         mockTest.performRequest(new Request()
-                .method(Method.PUT)
-                .url("/professor/")
-                .params(requestParams)
-                .body(professorDTO1))
-            .andExpect(status().is2xxSuccessful())
-            .andExpect(jsonPath("$.name", is(professorDTO1.getName())))
-            .andExpect(jsonPath("$.serviceTime", is(professorDTO1.getServiceTime())))
-            .andExpect(jsonPath("$.discipline", is(professorDTO1.getDiscipline())));
+                        .method(Method.PUT)
+                        .url("/professor/")
+                        .params(requestParams)
+                        .body(professorDTO1))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.name", is(professorDTO1.getName())))
+                .andExpect(jsonPath("$.serviceTime", is(professorDTO1.getServiceTime())))
+                .andExpect(jsonPath("$.discipline", is(professorDTO1.getDiscipline())));
     }
 
     @ParameterizedTest
@@ -189,6 +189,6 @@ public class ProfessorTests {
                         .url("/professor/")
                         .pathParams(professor.getId())
                         .body(professorDTO))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isBadRequest());
     }
 }
