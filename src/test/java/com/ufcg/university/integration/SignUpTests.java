@@ -137,7 +137,7 @@ public class SignUpTests {
                         .method(Method.POST)
                         .url("/signup/professor")
                         .body(professorDTO))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isBadRequest());
     }
 
     @ParameterizedTest
