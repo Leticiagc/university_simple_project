@@ -6,6 +6,15 @@ import {{invokerPackage}}.ApiException;
 {{#imports}}import {{import}};
 {{/imports}}
 
+{{#mockTests}}
+import org.api.mocktests.annotations.Authenticate;
+import org.api.mocktests.annotations.AuthenticatedTest;
+import org.api.mocktests.annotations.AutoConfigureRequest;
+import org.api.mocktests.models.Method;
+import org.api.mocktests.models.Request;
+import org.api.mocktests.utils.MockTest;
+{{/mockTests}}
+
 {{#junitTest}}
 import org.junit.jupiter.api.Test;
 import org.junit.Ignore;
@@ -25,7 +34,6 @@ import java.time.OffsetDateTime;
     import java.util.HashMap;
     import java.util.List;
     import java.util.Map;
-
 {{/fullJavaUtil}}
 
 {{#spring}}
