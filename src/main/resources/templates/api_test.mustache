@@ -5,6 +5,7 @@ package {{package}};
 import {{invokerPackage}}.ApiException;
 {{#imports}}import {{import}};
 {{/imports}}
+
 import org.junit.jupiter.api.Test;
 import org.junit.Ignore;
 import org.junit.Assert;
@@ -23,27 +24,23 @@ import java.time.OffsetDateTime;
 */
 public class {{classname}}Test {
 private final {{classname}} api = new {{classname}}();
-
+{{>generatedAnnotation}}
+@SpringBootTest
 {{#operations}}
-    {{#operation}}
-        /**
-        {{#summary}}
-            * {{.}}
-            *
-        {{/summary}}
-        {{#notes}}
-            * {{.}}
-            *
-        {{/notes}}
-        * @throws ApiException
-        *          if the Api call fails
-        */
+    public class {{classname}} {
+        @Autowired
+        private MockMvc mockMvc;
+
+        @Autowired
+        private MockTest mockTest;
+
         @Test
         @ParameterizedTest
         public void {{operationId}}Test() throws ApiException {
-        //{{#allParams}}
+        {{#allParams}}
+
             //{{{dataType}}} {{paramName}} = null;
-            //{{/allParams}}
+        {{/allParams}}
         //{{#returnType}}{{{.}}} response = {{/returnType}}api.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
 
         // TODO: test validations
@@ -62,6 +59,5 @@ private final {{classname}} api = new {{classname}}();
 
         // TODO: test validations
         }
-    {{/operation}}
+    }
 {{/operations}}
-}
