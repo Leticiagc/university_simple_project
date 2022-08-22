@@ -53,6 +53,9 @@ dependencies {
 	implementation 'net.minidev:json-smart:2.4.8'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
 	testImplementation 'com.github.api-mocktests:mocktests:1.7.3'
+	// https://mvnrepository.com/artifact/com.github.spullara.mustache.java/compiler
+	implementation group: 'com.github.spullara.mustache.java', name: 'compiler', version: '0.8.9'
+
 }
 
 test {

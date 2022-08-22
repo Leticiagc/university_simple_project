@@ -57,8 +57,7 @@ public class ProfessorTests {
         professorService.createProfessor(new ProfessorDTO("Maely","1234maely",5,"Computação"));
         professorService.createProfessor(new ProfessorDTO("Vitor", "manel123",5,"Computação"));
     }
-    @Nested
-    class GetMethods {
+
         @Test
         @DisplayName("test get all teachers")
         @AuthenticatedTest
@@ -94,10 +93,7 @@ public class ProfessorTests {
                     .andExpect(status().is4xxClientError());
 
         }
-    }
 
-    @Nested
-    class DeleteMethods{
         @ParameterizedTest
         @DisplayName("test delete nonexistent teacher by id")
         @MethodSource("professorCases")
@@ -126,8 +122,6 @@ public class ProfessorTests {
         }
     }
 
-    @Nested
-    class UpdateMethods{
         @ParameterizedTest
         @DisplayName("test put teacher by id")
         @MethodSource("professorCases")
@@ -166,7 +160,7 @@ public class ProfessorTests {
                             .body(professorDTO))
                     .andExpect(status().is4xxClientError());
         }
-    }
+
 
     @AfterEach
     public void afterTests() {
@@ -191,10 +185,4 @@ public class ProfessorTests {
                 Arguments.of(new ProfessorDTO("Jonatas","12345",4,null))
         );
     }
-
-    @Authenticate
-    private Request requestLogin = new Request()
-            .method(Method.POST)
-            .url("/login")
-            .body(new User("Mathias", "12345678"));
 }
