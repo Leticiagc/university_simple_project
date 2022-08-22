@@ -1,13 +1,23 @@
 {{>licenseInfo}}
 
 package {{package}};
-
+import {{package}}.ProfessorRepository;
+import {{package}}.ProfessorService;
 import {{invokerPackage}}.ApiException;
 {{#imports}}import {{import}};
 {{/imports}}
 import org.junit.jupiter.api.Test;
 import org.junit.Ignore;
 import org.junit.Assert;
+
+import org.api.mocktests.utils.MockTest;
+import org.api.mocktests.annotations.AuthenticatedTest;
+
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -23,6 +33,21 @@ import java.time.OffsetDateTime;
 */
 public class {{classname}}Test {
 private final {{classname}} api = new {{classname}}();
+
+@Autowired
+private MockMvc mockMvc;
+
+@Autowired
+private MockTest mockTest;
+
+//@Autowired todo:
+//private {{classname}}Service {{classname}}service;
+
+//@Autowired todo:
+//private {{classname}}Service {{classname}}service;
+
+//@BeforeEach
+//public void beforeTests() throws Exception {} todo:
 
 {{#operations}}
     {{#operation}}
@@ -40,11 +65,19 @@ private final {{classname}} api = new {{classname}}();
         */
         @Test
         @ParameterizedTest
+        @DisplayName({{getById}}) todo:
+        @MethodSource({cases}}) todo:
+        @AuthenticatedTest
         public void {{operationId}}Test() throws ApiException {
         //{{#allParams}}
-            //{{{dataType}}} {{paramName}} = null;
-            //{{/allParams}}
-        //{{#returnType}}{{{.}}} response = {{/returnType}}api.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+            //{{classname}}Professor {{classname}}professor = {{operation}}.{{operation}}({{param}});
+
+            //mockTest.{{performRequest}}(new {{classname}}.{{method}}({param}).{{url}}({{urlName}}.{{paramName}}({{param}})
+            //.{{method}}({{param}})
+            //.{{method}}({{param}},{{method}}({{param}}))))
+            //.{{method}}({{param}},{{method}}({{param}}))))
+            //.{{method}}({{param}},{{method}}({{param}}))));
+
 
         // TODO: test validations
         }

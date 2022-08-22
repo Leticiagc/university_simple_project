@@ -137,7 +137,7 @@ public class SignUpTests {
                         .method(Method.POST)
                         .url("/signup/professor")
                         .body(professorDTO))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isBadRequest());
     }
 
     @ParameterizedTest
@@ -164,7 +164,7 @@ public class SignUpTests {
                 .method(Method.POST)
                 .url("/login")
                 .body(new User(professorDTO.getName(), professorDTO.getPassword())))
-            .andExpect(status().is2xxSuccessful())
+            .andExpect(status().isOk())
             .andReturn().getResponse().getHeader("Authorization"));
     }
 
@@ -178,7 +178,7 @@ public class SignUpTests {
         Objects.requireNonNull(mockTest.performRequest(new Request()
                 .method(Method.POST).url("/login")
                 .body(new User(studentDTO.getName(), studentDTO.getPassword())))
-            .andExpect(status().is2xxSuccessful())
+            .andExpect(status().isOk())
             .andReturn().getResponse().getHeader("Authorization"));
     }
 
@@ -190,7 +190,7 @@ public class SignUpTests {
                         .method(Method.POST)
                         .url("/signup/professor")
                         .body(professorDTO))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isBadRequest());
     }
 
     @ParameterizedTest
