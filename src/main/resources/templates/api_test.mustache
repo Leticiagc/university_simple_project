@@ -76,16 +76,15 @@ private final {{classname}} api = new {{classname}}();
         * @throws ApiException
         *          if the Api call fails
         */
-        @Test
-        @ParameterizedTest
+        //@ParameterizedTest
+        @DisplayName({{display}})
+        //@MethodSource("professorCases")
+        //@AuthenticatedTest
         public void {{operationExceptionId}}Test() throws ApiException {
-        //{{#allParams}}
-            //{{{dataType}}} {{paramName}} = null;
-            //{{/allParams}}
-        //{{#returnType}}{{{.}}} response = {{/returnType}}api.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
-
-        // TODO: test validations
+            //mockTest.{{operation}}(new Request().method({{method}}).url({{urlName}}).pathParams(INVALID_INPUT))
+            //.andExpect(status().{{status}});
         }
+    }
     }
     {{operation}}
 {{/operations}}
