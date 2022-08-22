@@ -6,9 +6,27 @@ import {{package}}.ProfessorService;
 import {{invokerPackage}}.ApiException;
 {{#imports}}import {{import}};
 {{/imports}}
+
+{{#mockTests}}
+import org.api.mocktests.annotations.Authenticate;
+import org.api.mocktests.annotations.AuthenticatedTest;
+import org.api.mocktests.annotations.AutoConfigureRequest;
+import org.api.mocktests.models.Method;
+import org.api.mocktests.models.Request;
+import org.api.mocktests.utils.MockTest;
+{{/mockTests}}
+
+{{#junitTest}}
 import org.junit.jupiter.api.Test;
 import org.junit.Ignore;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+{{/junitTest}}
 
 import org.api.mocktests.utils.MockTest;
 import org.api.mocktests.annotations.AuthenticatedTest;
@@ -26,13 +44,23 @@ import java.time.OffsetDateTime;
     import java.util.HashMap;
     import java.util.List;
     import java.util.Map;
-
 {{/fullJavaUtil}}
+
+{{#spring}}
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+{{/spring}}
+
 /**
 * API tests for {{classname}}
 */
 public class {{classname}}Test {
 private final {{classname}} api = new {{classname}}();
+<<<<<<< HEAD
 
 @Autowired
 private MockMvc mockMvc;
@@ -49,26 +77,26 @@ private MockTest mockTest;
 //@BeforeEach
 //public void beforeTests() throws Exception {} todo:
 
+=======
+{{>generatedAnnotation}}
+@SpringBootTest
+>>>>>>> 0371cbde8e2d0d0126a77db88fac5a2212996ecb
 {{#operations}}
-    {{#operation}}
-        /**
-        {{#summary}}
-            * {{.}}
-            *
-        {{/summary}}
-        {{#notes}}
-            * {{.}}
-            *
-        {{/notes}}
-        * @throws ApiException
-        *          if the Api call fails
-        */
+    {{operation}}
+    public class {{classname}} {
+        @Autowired
+        private MockMvc mockMvc;
+
+        @Autowired
+        private MockTest mockTest;
+
         @Test
         @ParameterizedTest
         @DisplayName({{getById}}) todo:
         @MethodSource({cases}}) todo:
         @AuthenticatedTest
         public void {{operationId}}Test() throws ApiException {
+<<<<<<< HEAD
         //{{#allParams}}
             //{{classname}}Professor {{classname}}professor = {{operation}}.{{operation}}({{param}});
 
@@ -78,6 +106,13 @@ private MockTest mockTest;
             //.{{method}}({{param}},{{method}}({{param}}))))
             //.{{method}}({{param}},{{method}}({{param}}))));
 
+=======
+        {{#allParams}}
+
+            //{{{dataType}}} {{paramName}} = null;
+        {{/allParams}}
+        //{{#returnType}}{{{.}}} response = {{/returnType}}api.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+>>>>>>> 0371cbde8e2d0d0126a77db88fac5a2212996ecb
 
         // TODO: test validations
         }
@@ -85,16 +120,15 @@ private MockTest mockTest;
         * @throws ApiException
         *          if the Api call fails
         */
-        @Test
-        @ParameterizedTest
+        //@ParameterizedTest
+        @DisplayName({{display}})
+        //@MethodSource("professorCases")
+        //@AuthenticatedTest
         public void {{operationExceptionId}}Test() throws ApiException {
-        //{{#allParams}}
-            //{{{dataType}}} {{paramName}} = null;
-            //{{/allParams}}
-        //{{#returnType}}{{{.}}} response = {{/returnType}}api.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
-
-        // TODO: test validations
+            //mockTest.{{operation}}(new Request().method({{method}}).url({{urlName}}).pathParams(INVALID_INPUT))
+            //.andExpect(status().{{status}});
         }
-    {{/operation}}
+    }
+    }
+    {{operation}}
 {{/operations}}
-}
