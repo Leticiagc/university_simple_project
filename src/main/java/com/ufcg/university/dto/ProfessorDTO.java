@@ -1,17 +1,40 @@
 package com.ufcg.university.dto;
 
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.*;
 
-@Schema(name = "Modelo ProfessorDTO", description = "Modelo de ProfessorDTO da aplicação.")
+@Schema(name = "ProfessorDTO",
+		description = "Modelo de ProfessorDTO da aplicação.",
+		extensions = {
+				@Extension(
+						name = "ExtensionProfessorDTO",
+						properties = @ExtensionProperty(
+								name = "ExtensionProperty-ProfessorDTO",
+								value = "ValueExtensionProperty-ProfessorDTO",
+								parseValue = true
+						)
+				)
+		})
 public class ProfessorDTO {
 
 	@Schema(
 			title = "Nome",
 			description = "Nome do professor",
 			example = "Pedro",
-			required = true
+			required = true,
+			extensions = {
+					@Extension(
+							name = "name",
+							properties = @ExtensionProperty(
+									name = "NameExtensionProperty-ProfessorDTO",
+									value = "ValueNameExtensionProperty-ProfessorDTO",
+									parseValue = true
+							)
+					)
+			}
 	)
 	@NotBlank(message ="Invalid Name")
 	@NotNull(message ="Invalid Name")

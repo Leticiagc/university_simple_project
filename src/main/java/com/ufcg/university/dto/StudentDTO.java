@@ -1,15 +1,37 @@
 package com.ufcg.university.dto;
 
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "Modelo StudentDTO", description = "Modelo de StudentDTO da aplicação.")
+@Schema(name = "StudentDTO",
+		description = "Modelo de StudentDTO da aplicação.",
+		extensions = {
+				@Extension(
+						name = "NameExtensionStudentDTO",
+						properties = @ExtensionProperty(
+								name = "NameExtensionProperty-StudentDTO",
+								value = "ValueNameExtensionProperty-StudentDTO",
+								parseValue = true
+						)
+				)
+		})
 public class StudentDTO {
 
 	@Schema(
 			title = "Nome",
 			description = "Nome do Estudante",
 			example = "José",
-			required = true
+			required = true,
+			extensions = {
+					@Extension(
+							name = "name",
+							properties = @ExtensionProperty(
+									name = "PropertyNameStudentDTO",
+									value = "Value_PropertyNameStudentDTO"
+							)
+					)
+			}
 	)
 	private String name;
 
