@@ -1,12 +1,25 @@
 package com.ufcg.university.entities;
 
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "student")
-@Schema(name = "Modelo Student", description = "Modelo de Student da aplicação.")
+@Schema(name = "Student",
+		description = "Modelo de Student da aplicação.",
+		extensions = {
+				@Extension(
+						name = "NameExtensionStudent",
+						properties = @ExtensionProperty(
+								name = "NameExtensionProperty-Student",
+								value = "ValueNameExtensionProperty-Student",
+								parseValue = true
+						)
+				)
+		})
 public class Student {
 	
 	@Id

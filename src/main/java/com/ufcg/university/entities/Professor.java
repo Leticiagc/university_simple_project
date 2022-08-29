@@ -1,5 +1,7 @@
 package com.ufcg.university.entities;
 
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -13,7 +15,19 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "professor")
-@Schema(name = "Modelo Professor", description = "Modelo Professor da aplicação.")
+@Schema(
+		name = "Professor",
+		description = "Modelo Professor da aplicação.",
+		extensions = {
+				@Extension(
+						name = "NameExtensionProfessor",
+						properties = @ExtensionProperty(
+								name = "NameExtensionProperty-Professor",
+								value = "ValueNameExtensionProperty-Professor",
+								parseValue = true
+						)
+				)
+		})
 public class Professor extends RepresentationModel<Professor> {
 	
 	@Id
@@ -33,8 +47,6 @@ public class Professor extends RepresentationModel<Professor> {
 			example = "Francisco",
 			required = true
 	)
-
-
 	private String name;
 	
 	@Column(name = "password")
