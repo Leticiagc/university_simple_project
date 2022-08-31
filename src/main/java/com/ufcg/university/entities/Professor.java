@@ -19,14 +19,17 @@ import javax.validation.constraints.*;
 		name = "Professor",
 		description = "Modelo Professor da aplicação.",
 		extensions = {
-				@Extension(
-						name = "NameExtensionProfessor",
-						properties = @ExtensionProperty(
-								name = "NameExtensionProperty-Professor",
-								value = "ValueNameExtensionProperty-Professor",
-								parseValue = true
-						)
-				)
+			@Extension(
+				name = "myExt",
+				properties = {
+					@ExtensionProperty(
+						name = "varA",
+						value = "A"),
+					@ExtensionProperty(
+						name = "varB",
+						value = "B")
+				}
+			)
 		})
 public class Professor extends RepresentationModel<Professor> {
 	
