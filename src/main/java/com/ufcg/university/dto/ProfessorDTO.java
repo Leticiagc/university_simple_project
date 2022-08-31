@@ -9,14 +9,17 @@ import javax.validation.constraints.*;
 @Schema(name = "ProfessorDTO",
 		description = "Modelo de ProfessorDTO da aplicação.",
 		extensions = {
-				@Extension(
-						name = "ExtensionProfessorDTO",
-						properties = @ExtensionProperty(
-								name = "ExtensionProperty-ProfessorDTO",
-								value = "ValueExtensionProperty-ProfessorDTO",
-								parseValue = true
-						)
-				)
+			@Extension(
+				name = "myExt",
+				properties = {
+					@ExtensionProperty(
+						name = "varA",
+						value = "A"),
+					@ExtensionProperty(
+						name = "varB",
+						value = "B")
+				}
+			)
 		})
 public class ProfessorDTO {
 
