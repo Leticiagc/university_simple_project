@@ -75,7 +75,7 @@ public class ProfessorDTO {
 			title = "Disciplina",
 			example = "Lógica",
 			nullable = true,
-			allowableValues = "Cálculo 1, P1, LP1, EDA, Lógica"
+			allowableValues = {"Cálculo 1", "P1", "LP1", "EDA", "Lógica"}
 	)
 	@NotBlank(message = "Invalid Discipline")
 	@NotNull(message = "Invalid Discipline")
